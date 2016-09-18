@@ -1,0 +1,369 @@
+\documentclass[]{beamer}
+\usepackage[utf8x]{inputenc}
+\usepackage{beamerthemeshadow}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{graphicx}
+\usepackage{textpos}
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{color}
+\usepackage{stmaryrd}
+
+\usetheme[compress]{Berlin}
+\usefonttheme{default}
+\useoutertheme{infolines}
+
+\setbeamertemplate{footline}%{infolines theme}
+{
+\leavevmode%
+\hbox{%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+\usebeamerfont{author in head/foot}\insertshortauthor%~~(\insertshortinstitute)
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+\usebeamerfont{title in head/foot}\insertshorttitle
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{date in head/foot}%
+\usebeamerfont{date in head/foot}\insertshortdate{}
+%\insertframenumber{} / \inserttotalframenumber\hspace*{2ex} % ohne Seitenzahlen
+\end{beamercolorbox}}%
+\vskip0pt%
+}
+
+\setbeamertemplate{frametitle}
+{%
+\vbox{}\vskip-3.9ex
+\begin{beamercolorbox}[wd=\paperwidth,ht=2.0ex,leftskip=0.4cm,dp=0.6ex,]{frametitle}
+\usebeamerfont{header_font_title}{\insertframetitle}
+\end{beamercolorbox}%
+}
+
+% Schusterjunge & Hurenkind
+\clubpenalty = 10000
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
+\hbadness = 10000
+
+\author[Christopher Blöcker, B. Sc.]{Christopher Blöcker, B. Sc.\\ inf9900@fh-wedel.de}
+\title[AFS Tutorium]{Tutorium\\Automaten und Formale Sprachen}
+\date{SS 2012}
+\subtitle{Das Pumping-Lemma}
+\subject{Automaten und Formale Sprachen}
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Das Pumping-Lemma}
+\subsection{Reguläre Sprachen}
+\begin{frame}[squeeze]{}
+  \begin{alertblock}{Frage}
+    Wie lässt sich feststellen, ob
+      \[\mathcal{L} \in \mathcal{L}_3 \text{?}\]
+  \end{alertblock}
+  
+  \pause
+  
+  \begin{exampleblock}{Antwort}
+    Eine Sprache ist vom Typ-3, wenn sie von einem endlichen Automaten akzeptiert wird. \\
+    \vspace*{0.5em}
+    \pause
+    Da Endliche Automaten, Reguläre Ausdrücke und Typ-3-Grammatiken äquivalent sind (sie lassen sich ineinander überführen) ist für den Nachweis $\mathcal{L} \in \mathcal{L}_3$ ein Endlicher Automat $\mathcal{A}$, ein Regulärer Ausdruck $\mathcal{R}$ oder eine Typ-3-Grammatik $\mathcal{G}$ mit
+      \[\mathcal{L_A} = \mathcal{L} \text{ bzw. } \mathcal{L_R} = \mathcal{L} \text{ bzw. } \mathcal{L_G} = \mathcal{L}\]
+    anzugeben.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{alertblock}{Frage}
+    Wie lässt sich feststellen, ob
+      \[\mathcal{L} \notin \mathcal{L}_3 \text{?}\]
+  \end{alertblock}
+  
+  \pause
+  
+  \begin{exampleblock}{Antwort}
+    Mit Hilfe des Pumping-Lemmas. \\
+    \vspace*{0.5em}
+    \pause
+    Das Pumping-Lemma gilt für jede reguläre Sprache.
+      \[\mathcal{L} \in \mathcal{L}_3 \to \mathrm{PL} \left( \mathcal{L} \right).\]\\
+    \vspace*{0.5em}
+    \pause
+    Wenn die Bedingungen des Pumping-Lemmas nicht erfüllt sind, so kann die betroffene Sprache nicht regulär sein. \\
+    \vspace*{0.5em}
+    Durch Kontraposition erhält man
+      \[\overline{\mathrm{PL}(\mathcal{L})} \to \mathcal{L} \notin \mathcal{L}_3.\]
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{Das Pumping-Lemma}
+    Sei $\mathcal{L} \subseteq \Sigma^*$ eine reguläre Sprache. \\
+    Dann gibt es eine natürliche Zahl $p \in \mathbb{N}$ derart, dass sich jedes Wort $x \in \mathcal{L}$ mit $|x| \geq p$ zerlegen lässt in drei Teilworte
+    \vspace*{-0.5em}
+      \[x = uvw\]
+    \vspace*{-0.5em}
+    mit
+    \begin{enumerate}
+      \item $|v| > 0$
+      \item $|uv| \leq p$
+      \item $\underset{i \in \mathbb{N}}{\bigwedge} uv^iw \in \mathcal{L}$
+    \end{enumerate}
+  \end{block}
+  
+  \vspace*{-0.5em}
+  \pause
+  
+  \begin{alertblock}{Vorsicht!}
+    Es gilt
+    \vspace*{-0.5em}
+    \[\mathcal{L} \in \mathcal{L}_3 \rightarrow \mathrm{PL} \left( \mathcal{L} \right).\]\\
+    \vspace*{0.5em}
+    Die Umkehrung gilt jedoch \textbf{nicht}! Die folgende Aussage ist also \textbf{falsch}:
+    \vspace*{-0.5em}
+    \[\lightning ~ \mathrm{PL} \left( \mathcal{L} \right) \rightarrow \mathcal{L} \in \mathcal{L}_3. ~ \lightning\]
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{Aussage des Pumping-Lemmas}
+    Sei $\mathcal{L} \in \mathcal{L}_3$ eine reguläre Sprache. Dann gilt das Pumping-Lemma für $\mathcal{L}$, also:
+    \[  \bigvee_{p \in \mathbb{N}}
+      ~ 
+        \bigwedge_{\begin{scriptsize} \begin{array}{c} x \in \mathcal{L} \\ |x| \geq p \end{array} \end{scriptsize}}
+      ~
+        \bigvee_{\begin{scriptsize} \begin{array}{c} x = uvw \\ |uv| \leq p \\ |v| > 0 \end{array} \end{scriptsize}}
+      ~
+        \bigwedge_{i \in \mathbb{N}}
+      ~
+        uv^iw \in \mathcal{L}. \]
+  \end{block}
+  
+  \begin{exampleblock}{In Worten}
+    Wenn $\mathcal{L}$ eine reguläre Sprache ist, dann
+    \pause
+    \begin{itemize}
+      \item \textbf{gibt es} eine Zahl $p$ \\
+            (die Pumping-Länge, die wir i.d.R. \textbf{nicht konkret} kennen)
+      \pause
+      \item und es gilt \textbf{für jedes} Wort $x \in \mathcal{L}$ mit der \textbf{Mindestlänge} $p$,
+      \pause
+      \item dass es eine \textbf{zulässige} Zerteilung von $x$ in drei Teilworte \textbf{gibt},
+      \pause
+      \item sodass sich $x$ für \textbf{jede} Zahl $i \in \mathbb{N}$ \enquote{aufpumpen} lässt und das entstehende Wort $x'$ ebenfalls in $\mathcal{L}$ liegt.
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{Verwendung der negierten Aussage}
+    Wenn das Pumping-Lemma für eine Sprache $\mathcal{L}$ nicht gilt, so kann die betroffene Sprache nicht regulär sein, also wenn
+    \[  \bigvee_{\begin{scriptsize} \begin{array}{c} x \in \mathcal{L} \\ |x| \geq p \end{array} \end{scriptsize}}
+      ~
+        \bigwedge_{\begin{scriptsize} \begin{array}{c} x = uvw \\ |uv| \leq p \\ |v| > 0 \end{array} \end{scriptsize}}
+      ~
+        \bigvee_{i \in \mathbb{N}}
+      ~
+        uv^iw \notin \mathcal{L}. \]
+  \end{block}
+  
+  \pause
+  \vspace*{-0.25em}
+  
+  \begin{exampleblock}{In Worten}
+    Eine Sprache $\mathcal{L}$ ist \textbf{nicht} regulär, wenn
+    \pause
+    \begin{itemize}
+      \item es ein Wort $x \in \mathcal{L}$ mit der \textbf{Mindestlänge} $p$ \textbf{gibt},
+      \pause
+      \item bei dem zu \textbf{jeder zulässigen} Zerlegung in drei Teilworte
+      \pause
+      \item eine Zahl $i \in \mathbb{N}$ \textbf{existiert}, sodass das \enquote{aufgepumpte} Wort $x'$ \textbf{nicht} in $\mathcal{L}$ liegt.
+    \end{itemize}
+  \end{exampleblock}
+  
+  \pause
+  \vspace*{-0.25em}
+  
+  \begin{alertblock}{Hinweis}
+    Wir können nicht nur \enquote{aufpumpen}, sondern auch \enquote{Luft herauslassen}.
+  \end{alertblock}
+\end{frame}
+
+\section{Exkurs}
+\subsection{\textsc{Nerode}-Relation}
+\begin{frame}[squeeze]{}
+  \begin{alertblock}{Problem}
+    Es gibt Sprachen mit $\mathcal{L} \notin \mathcal{L}_3$, für die aber das Pumping-Lemma erfüllt ist.
+  \end{alertblock}
+  
+  \pause
+  
+  \begin{block}{Beispiel}
+    \[L = \left\{ a^m b^n c^n \, | \, m, n \geq 1 \right\} \cup \left\{ b^m c^n \, | \, m, n \geq 0 \right\}\]
+  \end{block}
+  
+  \pause  
+  
+  \begin{exampleblock}{\textsc{Nerode}-Relation}
+    Seien $x, y \in \Sigma^*, \mathcal{L} \subseteq \Sigma^*, \mathcal{R} \subseteq \Sigma^* \times \Sigma^*$.
+    \[\mathcal{R_N} : x \sim y \Leftrightarrow \underset{z \in \Sigma^*}{\bigwedge} (xz \in \mathcal{L}) \Leftrightarrow (yz \in \mathcal{L})\]
+  \end{exampleblock}
+  
+  \pause
+  
+  \begin{block}{Satz von \textsc{Myhill} und \textsc{Nerode}}
+    Wenn der Index der \textsc{Nerode}-Relation endlich ist, also wenn es nur endlich viele Äquivalenzklassen bezüglich $\mathcal{R_N}$ gibt, so gilt $\mathcal{L} \in \mathcal{L}_3$.
+  \end{block}
+\end{frame}
+
+\section{Aufgaben}
+\begin{frame}[squeezue]{}
+  \vspace*{-0.25em}
+  \begin{alertblock}{Aufgaben}
+    Zeigen Sie, dass die folgenden Sprachen nicht regulär sind.
+    \begin{enumerate}
+      \item $L_1 = \left\{a^n b^n \; | \; n \in \mathbb{N} \right\}$
+      \item $L_2 = \left\{w \in \{0, 1\}^* \;|\; w \text{ ist kein Palindrom}\right\}$
+      \item $L_3 = \left\{a^p \;|\; p \text{ ist eine Primzahl}\right\}$
+      \item $L_4 = \left\{a^{n^2} \;|\; n \in \mathbb{N}\right\}$
+      \item $L_5 = \left\{a^{2^n} \;|\; n \in \mathbb{N}\right\}$
+    \end{enumerate}
+  \end{alertblock}
+  
+  \pause
+  \vspace*{-0.5em}
+  
+  \begin{block}{Herangehensweise}
+    \begin{enumerate}
+      \item Annahme, $L$ sei regulär
+      \item Wenn $L$ regulär ist, so muss das Pumping-Lemma gelten
+      \item Finden eines Wortes, für das es keine zum Pumpen geeignete Unterteilung gibt (Wie? Kreativität! Es gibt keinen Algorithmus.)
+      \item Gegenbeispiel gefunden \\
+            $\rightarrow$ Annahme muss falsch sein \\
+            $\rightarrow L$ kann nicht regulär sein
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\subsection{Lösungen}
+\begin{frame}[squeezue]{}
+  \begin{exampleblock}{$L_1 = \left\{a^n b^n \; | \; n \in \mathbb{N} \right\}$}
+    \pause
+    \[\text{Sei } x = a^p b^p \text{ mit } |x| = 2p,\]
+    \pause
+    \[\text{und die Unterteilung } x = uvw = \underbrace{a^j}_u \cdot \underbrace{a^{p-j-k}}_v \cdot \underbrace{a^k b^p}_w\]
+    \pause
+    Damit sind alle möglichen Unterteilungen erfasst. \\
+    \pause
+    \vspace*{0.5em}
+    Unabhängig von $j$ und $k$ wählen wir $i = 0$ zum \enquote{aufpumpen}. \\
+    \pause
+    \vspace*{0.5em}
+    Da wegen Bedingung 2. des Pumping-Lemmas gelten muss $j + k < p$ , entstehen dabei Wörter der Form $x' = a^q b^p$ mit $q < p$. \\
+    \pause
+    \vspace*{0.5em}
+    Die entstehenden Wörter $x'$ liegen nicht in $L_1$, somit gilt
+    \[L_1 \notin \mathcal{L}_3\]
+    \hfill $\square$
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[squeezue]{}
+  \vspace*{-0.25em}
+  \begin{exampleblock}{$L_2 = \left\{w \in \{0, 1\}^* \;|\; w \text{ ist kein Palindrom}\right\}$}
+    \pause
+    Aufgrund der Abschlusseigenschaften regulärer Sprachen gilt
+    \[L_2 \in \mathcal{L}_3 \Leftrightarrow \overline{L_2} \in \mathcal{L}_3\]
+    \pause
+    \vspace*{-0.5em}
+    \[\overline{L_2} = \left\{w \in \left\{0, 1\right\}^* \;|\; w \text{ ist ein Palindrom}\right\}\]
+    \pause
+    \vspace*{-0.5em}
+    \[\text{Sei } x = 1^p01^p \text{ mit } |x| = 2p + 1\]
+    \pause
+    \vspace*{-0.5em}
+    \[\text{und die Unterteilung } x = uvw = \underbrace{1^j}_u \cdot \underbrace{1^{p-j-k}}_v \cdot \underbrace{1^k 0 1^p}_w\]
+    mit $j + k < p$. Damit sind alle möglichen Unterteilungen erfasst. Beim Pumpen entstehen für jede Unterteilung Wörter, die kein Palindrom sind. \\
+    \pause
+    \vspace*{1em}
+    Es folgt
+    \[\overline{L_2} \notin \mathcal{L}_3 \rightarrow L_2 \notin \mathcal{L}_3\]
+    \hfill $\square$
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{exampleblock}{$L_3 = \left\{a^p \;|\; p \text{ ist eine Primzahl}\right\}$}
+    \pause
+    \[\text{Sei } x = a^p \text{ mit } |x| = p\]
+    \pause
+    \[\text{und die Unterteilung } x = uvw = \underbrace{a^j}_u \cdot \underbrace{a^{p-j-k}}_v \cdot \underbrace{a^k}_w\]
+    \pause
+    Die Länge des entstehenden Wortes $x'$ ist dann
+    \[|x'| = (j+k) + i(p-j-k)\]
+    \pause
+    Wir wählen zum Pumpen für $i$ einen Wert, sodass $|x'|$ nicht prim sein kann. \\
+    \pause
+    Sei $i = j+k$, dann ergibt sich als Wortlänge
+    \[|x'| = (j+k) + (j+k)(p-j-k) = (j+k)(1+p-j-k)\]
+    \pause
+    Die Länge lässt sich in zwei Faktoren zerteilen und kann somit nicht prim sein.
+    \pause
+    Für den Sonderfall $j+k=1$ wählen wir $i=0$. \hfill $\square$
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{exampleblock}{$L_4 = \left\{a^{n^2} \;|\; n \in \mathbb{N}\right\}$}
+    Beobachtung: Zu $L_4$ gehören Wörter der Länge $0, 1, 4, 9, 16, 25, 36, 49, \ldots$
+    \pause
+    \[\text{Sei } x = a^{p^2} \text{ mit } |x| = p^2\]
+    \pause
+    \vspace*{-1.5em}
+    \[\text{und die Unterteilung } x = uvw = \underbrace{a^j}_u \cdot \underbrace{a^{p^2-j-k}}_v \cdot \underbrace{a^k}_w\]
+    \pause
+    Zum Pumpem wählen wir $i = 2$. \\
+    \pause 
+    Wegen Bedingung 1. des Pumping-Lemma, $|v| > 0$, gilt
+    \pause
+    \[|x'| = |uv^2w| > p^2.\]
+    \pause
+    Und wegen Bedingung 2. des Pumping-Lemma, $|uv| \leq p \to |v| \leq p$:
+    \pause
+    \[\underbrace{|x'| = |uv^2w| \leq p^2 + p}_{\text{aufgepumptes Wort}} \pause < \underbrace{p^2 + 2p + 1 = \left( p + 1 \right)^2}_\text{nächste gültige Länge} \]
+    \pause
+    Also: $x' \notin L_4 \to L_4 \notin \mathcal{L}_3. \hfill \square$
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{exampleblock}{$L_5 = \left\{a^{2^n} \;|\; n \in \mathbb{N}\right\}$}
+    Beobachtung: Zu $L_5$ gehören Wörter der Länge $1, 2, 4, 8, 16, 32, 64, \ldots$
+    \pause
+    \[\text{Sei } x = a^{2^p} \text{ mit } |x| = 2^p\]
+    \pause
+    \vspace*{-1.5em}
+    \[\text{und die Unterteilung } x = uvw = \underbrace{a^j}_u \cdot \underbrace{a^{2^p-j-k}}_v \cdot \underbrace{a^k}_w\]
+    \pause
+    Zum Pumpem wählen wir $i = 2$. \\
+    \pause 
+    Wegen Bedingung 1. des Pumping-Lemma, $|v| > 0$, gilt
+    \pause
+    \[|x'| = |uv^2w| > 2^p.\]
+    \pause
+    Und wegen Bedingung 2. des Pumping-Lemma, $|uv| \leq p \to |v| \leq p$:
+    \pause
+    \[\text{mit } p < 2^p\colon \pause \underbrace{|x'| = |uv^2w| \leq 2^p + p}_{\text{aufgepumptes Wort}} \pause < \underbrace{2 \cdot 2^p = 2^{p+1}}_\text{nächste gültige Länge}\]
+    \pause
+    Also: $x' \notin L_5 \to L_5 \notin \mathcal{L}_3. \hfill \square$
+  \end{exampleblock}
+\end{frame}
+
+\end{document}

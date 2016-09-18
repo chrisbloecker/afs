@@ -1,0 +1,178 @@
+\documentclass[]{beamer}
+\usepackage[utf8x]{inputenc}
+\usepackage{beamerthemeshadow}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{graphicx}
+\usepackage{textpos}
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{color}
+\usepackage{stmaryrd}
+
+\usetheme[compress]{Berlin}
+\usefonttheme{default}
+\useoutertheme{infolines}
+
+\setbeamertemplate{footline}%{infolines theme}
+{
+\leavevmode%
+\hbox{%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+\usebeamerfont{author in head/foot}\insertshortauthor%~~(\insertshortinstitute)
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+\usebeamerfont{title in head/foot}\insertshorttitle
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{date in head/foot}%
+\usebeamerfont{date in head/foot}\insertshortdate{}
+%\insertframenumber{} / \inserttotalframenumber\hspace*{2ex} % ohne Seitenzahlen
+\end{beamercolorbox}}%
+\vskip0pt%
+}
+
+\setbeamertemplate{frametitle}
+{%
+\vbox{}\vskip-3.9ex
+\begin{beamercolorbox}[wd=\paperwidth,ht=2.0ex,leftskip=0.4cm,dp=0.6ex,]{frametitle}
+\usebeamerfont{header_font_title}{\insertframetitle}
+\end{beamercolorbox}%
+}
+
+% Schusterjunge & Hurenkind
+\clubpenalty = 10000
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
+\hbadness = 10000
+
+\author[Christopher Blöcker, B. Sc.]{Christopher Blöcker, B. Sc.\\ inf9900@fh-wedel.de}
+\title[AFS Tutorium]{Tutorium\\Automaten und Formale Sprachen}
+\date{SS 2012}
+\subtitle{Einführung in die Komplexitätstheorie}
+\subject{Automaten und Formale Sprachen}
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{Vereinbarung}
+    Im folgenden bezeichne \\
+    \vspace*{0.5em}
+    \begin{tabular}{l l}
+      $\Pi$                            & Entscheidungsprobleme, \\
+      $\mathfrak{B} \left( \Pi \right)$ & Menge der Beispiele (Instanzen) von $\Pi$, \\
+      $I$                              & Ein Beispiele mit $I \in \mathfrak{B} \left( \Pi \right)$, \\
+      $\mathcal{A}_\Pi$                & Einen Algorithmus, der $\Pi$ entscheidet, \\
+      $t_\mathcal{A} \left( I \right)$ & Anzahl der Rechenschritte, die $\mathcal{A}$ für das Lösen von $I$ benötigt. \\
+    \end{tabular}
+  \end{block}
+  
+  \pause
+  
+  \begin{definition}
+    Die Funktion $T_\mathcal{A} : \mathbb{N} \to \mathbb{N}$ mit
+    \[T_\mathcal{A} \left( n \right) = \max \left\{ t_\mathcal{A} \left( I \right) \ | \ I \in \mathfrak{B} \left( \Pi \right) \wedge L \left( I \right) = n \right\} \]
+    heißt Zeitkomplexitätsfunktion für den Algorithmus $\mathcal{A}$.
+  \end{definition}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{definition}
+    Sei $\mathcal{M}$ eine \textbf{DTM}, die Funktion $T_\mathcal{M} : \mathbb{N} \to \mathbb{N}$ mit
+    \[T_\mathcal{M} \left( n \right) = \max \{ k \in \mathbb{N} \ | \ \bigvee_{\begin{scriptsize} \begin{array}{c} x \in \Sigma^* \\ |x| = n \end{array} \end{scriptsize}} \mathcal{M} \text{ stoppt nach k Schritten} \} \]
+    heißt Zeitkomplexitätsfunktion für die \textbf{TM} $\mathcal{M}$.
+  \end{definition}
+  
+  \pause
+  
+  \begin{definition}
+    Eine \textbf{DTM} heißt Polynomialzeit-\textbf{DTM} (kurz \textbf{PZDTM}), wenn es ein Polynom $p$ gibt mit
+    \[\bigwedge_{n \in \mathbb{N}} T_\mathcal{M} \left( n \right) \leq p \left( n \right). \]
+  \end{definition}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{$\mathcal{O}$-Notation}
+    Es ist im allgemeinen sehr schwierig, eine konkrete Schranke für einen Algorithmus anzugeben, daher begnügt man sich mit ungefähren oberen Schranken.
+    \[\begin{array}{l | l}
+      \text{Notation}  & \text{Bedeutung} \\
+      \hline
+      \mathcal{O}(1)   & \text{konstante Laufzeit} \\
+      \mathcal{O}(n)   & \text{lineare Laufzeit} \\
+      \mathcal{O}(n^k) & \text{polynomiale Laufzeit} \\
+      \mathcal{O}(2^n) & \text{exponentielle Laufzeit} \\
+    \end{array}\]
+  \end{block}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{Definition}
+    Die Klasse $\mathcal{P}$ wird definiert als
+    \[\mathcal{P} = \left\{L \ | \ L \subseteq \Sigma^* \wedge \text{ es gibt eine } \textbf{PZDTM } \mathcal{M} \text{ mit } L = L_\mathcal{M} \right\}.\]
+    $\mathcal{P}$ : Deterministisch in Polynomialzeit lösbar.
+  \end{block}
+  
+  \pause
+  
+  \begin{exampleblock}{Beispiele für Probleme aus $\mathcal{P}$}
+    \begin{itemize}
+      \item Sortieren
+      \item Suchen
+      \item Kürzestes Wege-Problem (Dijkstra)
+      \item \textsc{Stcon}
+      \item \textsc{Primes}
+      \item $\ldots$
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{definition}
+    Die Klasse $\mathcal{NP}$ wird definiert als
+    \[\mathcal{NP} = \left\{L \ | \ L \subseteq \Sigma^* \wedge \text{ es gibt eine } \textbf{PZNDTM } \mathcal{M} \text{ mit } L = L_\mathcal{M} \right\}.\]
+    $\mathcal{NP}$ : Nichtdeterministisch in Polynomialzeit lösbar. \\
+    $\mathcal{NPV}$ bildet dabei die Klasse der schwersten Probleme aus $\mathcal{NP}$.
+  \end{definition}
+  
+  \pause
+  
+  \begin{exampleblock}{Beispiele für Probleme aus $\mathcal{NPV}$}
+    \begin{itemize}
+      \item \textsc{Hampath}
+      \item \textsc{Traveling Salesman}
+      \item \textsc{Vertex Cover}
+      \item \textsc{Knapsack}
+      \item $\ldots$
+    \end{itemize}
+  \end{exampleblock}  
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{$\mathcal{P}$ und $\mathcal{NP}$}
+    Die Probleme aus $\mathcal{P}$ werden als in der Praxis effizient lösbar betrachtet, die aus $\mathcal{NP}$ als nur näherungsweise gut lösbar. \\
+    \vspace*{1em}
+    Eine mittlerweile weitgehend anerkannte Definition für $\mathcal{NP}$ lautet: \\
+    $\mathcal{NP}$ enthält die Probleme, für die eine Lösung in polynomialer Zeit verifiziert werden kann.
+  \end{block}
+\end{frame}
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{block}{Das $\mathcal{P-NP}$-Problem}
+    Es gilt
+    \[\mathcal{P} \subseteq \mathcal{NP}.\]
+    Bis heute konnte jedoch weder
+    \[\mathcal{P} = \mathcal{NP}\]
+    noch
+    \[\mathcal{P} \neq \mathcal{NP}\]
+    gezeigt werden. \\
+    \vspace*{1em}
+    Eine Entscheidung ist derzeit auch nicht in Sicht.
+  \end{block}
+\end{frame}
+
+\end{document}

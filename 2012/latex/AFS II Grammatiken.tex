@@ -1,0 +1,485 @@
+\documentclass[]{beamer}
+\usepackage[utf8x]{inputenc}
+\usepackage{beamerthemeshadow}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{graphicx}
+\usepackage{textpos}
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{color}
+\usepackage{stmaryrd}
+
+\usetheme[compress]{Berlin}
+\usefonttheme{default}
+\useoutertheme{infolines}
+
+\setbeamertemplate{footline}%{infolines theme}
+{
+\leavevmode%
+\hbox{%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+\usebeamerfont{author in head/foot}\insertshortauthor%~~(\insertshortinstitute)
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+\usebeamerfont{title in head/foot}\insertshorttitle
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{date in head/foot}%
+\usebeamerfont{date in head/foot}\insertshortdate{}
+%\insertframenumber{} / \inserttotalframenumber\hspace*{2ex} % ohne Seitenzahlen
+\end{beamercolorbox}}%
+\vskip0pt%
+}
+
+\setbeamertemplate{frametitle}
+{%
+\vbox{}\vskip-3.9ex
+\begin{beamercolorbox}[wd=\paperwidth,ht=2.0ex,leftskip=0.4cm,dp=0.6ex,]{frametitle}
+\usebeamerfont{header_font_title}{\insertframetitle}
+\end{beamercolorbox}%
+}
+
+% Schusterjunge & Hurenkind
+\clubpenalty = 10000
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
+\hbadness = 10000
+
+\author[Christopher Blöcker, B. Sc.]{Christopher Blöcker, B. Sc.\\ inf9900@fh-wedel.de}
+\title[AFS Tutorium]{Tutorium\\Automaten und Formale Sprachen}
+\date{SS 2012}
+\subtitle{Grammatiken}
+\subject{Automaten und Formale Sprachen}
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Grammatiken}
+\subsection{Beispiel und Definition}
+\begin{frame}[squeeze]{}
+  \begin{exampleblock}{Beispiel: Bezeichner in \textsc{Pascal} (BNF)}
+    \begin{tiny}
+      \begin{tabular}{l c l}
+        $<$BEZEICHNER$>$ & ::= & $<$BUCHSTABE$>~(<$BUCHSTABE$>\,|\,<$ZIFFER$>)^*$ \\
+        $<$BUCHSTABE$>$  & ::= & \textbf{\hspace*{3pt} 'A' $|$ 'B' $|$ 'C' $|$ 'D' $|$ 'E' $|$ 'F' $|$ 'G' $|$ 'H' $|$ 'I' $|$ 'J' $|$ 'K' $|$ 'L' $|$ 'M' $|$ 'N'} \\
+                         &     & \textbf{$|$ 'O' $|$ 'P' $|$ 'Q' $|$ 'R' $|$ 'S' $|$ 'T' $|$ 'U' $|$ 'V' $|$ 'W' $|$ 'X' $|$ 'Y' $|$ 'Z} \\
+        $<$ZIFFER$>$     & ::= & \textbf{'0' $|$ '1' $|$ '2' $|$ '3' $|$ '4' $|$ '5' $|$ '6' $|$ '7' $|$ '8' $|$ '9'} \\
+      \end{tabular}
+    \end{tiny}
+  \end{exampleblock}
+  
+  \pause
+  
+  \begin{block}{Definition : Grammatik}
+    Eine Grammatik ist ein 4-Tupel.
+    \[\mathcal{G = \left( N, T, R, S \right)}\]
+    mit \\
+    \vspace*{1em}
+    \begin{tabular}{l l}
+       $\mathcal{N}$ & Endliche, nicht-leere Menge der Nicht-Terminale \\
+       $\mathcal{T}$ & Endliche, nicht-leere Menge der Terminale \\
+                     & $\mathcal{N} \cap \mathcal{T} = \emptyset$ \\
+       $\mathcal{R}$ & Menge der Produktionen mit \\ 
+                     & $\mathcal{R} \subseteq \left( \mathcal{N} \cup \mathcal{T} \right)^+ \times \left( \mathcal{N} \cup \mathcal{T} \right)^*$ \\
+       $\mathcal{S}$ & Das Startsymbol mit $\mathcal{S} \in \mathcal{N}$ \\
+    \end{tabular}
+  \end{block}
+\end{frame}
+
+\subsection{Beispiel}
+\begin{frame}[squeeze]{}
+  \begin{exampleblock}{$\mathcal{L} = \{w \in \Sigma^* \;|\; w = a^nb^n, n \in \mathbb{N}\}$}
+    \[\mathcal{G = (N, T, R, S)}\]
+    mit
+    \[\begin{tabular}{l c l}
+      $\mathcal{N}$ & = & $\{S\}$ \\
+      $\mathcal{T}$ & = & $\{a, b\}$ \\
+      $\mathcal{R}$ & : & $S \to \epsilon$ \\
+                    &   & $S \to aSb$ \\
+      $\mathcal{S}$ & = & $S$ \\
+      \end{tabular}\]
+  \end{exampleblock}
+  
+  \pause
+  
+  \begin{block}{Anmerkung}
+    Regeln mit gleicher linker Seite können zusammengefasst werden 
+    \[S \to \epsilon, ~ S \to aSb ~ \Rightarrow ~ S \to \epsilon \;|\; aSb.\]
+  \end{block}
+\end{frame}
+
+\subsection{\textsc{Chomsky}-Hierarchie}
+\begin{frame}[squeeze]{}
+  \begin{block}{Die \textsc{Chomsky}-Hierarchie}
+    \textsc{Noam Chomsky} hat den Begriff der \textsc{Chomsky}-Hierarchie geprägt und die folgenden $4$ Sprachklassen definiert:
+    \begin{itemize}
+      \item Typ-3 : Reguläre Sprachen $\mathcal{L}_3$
+      \item Typ-2 : Kontext-Freie Sprachen $\mathcal{L}_2$
+      \item Typ-1 : Kontext-Sensitive Sprachen $\mathcal{L}_1$
+      \item Typ-0 : Rekursiv Aufzählbare Sprachen $\mathcal{L}_0$
+    \end{itemize}
+    \vspace*{0.5em}
+    \pause
+    Es gilt:
+    \[\mathcal{L}_3 \subsetneq \mathcal{L}_2 \subsetneq \mathcal{L}_1 \subsetneq \mathcal{L}_0\]
+    \pause
+    Jede dieser Sprachklassen lässt sich durch Grammatiken des jeweiligen Types erzeugen. Dabei unterliegen die Produktionen gewissen Restriktionen.
+  \end{block}
+  
+  \pause
+  
+  \begin{alertblock}{Anmerkung}
+    Es gibt (überabzählbar viele) Sprachen, die \textbf{nicht einmal} rekursiv aufzählbar sind!
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{block}{Typ-3 Grammatik (Reguläre Sprachen)}
+    Sei 
+    \[\mathcal{G = (N, T, R, S)}.\] \\
+    $\mathcal{G}$ ist vom Typ-3, wenn die Produktionen folgende Form haben:
+    \[\begin{array}{l c l}
+        A & \rightarrow & \epsilon \\
+        A & \rightarrow & a \\
+        A & \rightarrow & aB \\
+      \end{array}\]
+    mit
+    \begin{itemize}
+      \item<1-> $A, B \in \mathcal{N}$
+      \item<1-> $a \in \mathcal{T}$
+    \end{itemize}
+    Die hier gezeigte Grammatik ist rechtslinear. \\
+    (Der Ableitungsbaum wächst nach rechts.)
+  \end{block}
+\end{frame}
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{block}{Typ-3 Grammatik (Reguläre Sprachen)}
+    Zu jeder rechtslinearen Typ-3-Grammatik gibt es eine linkslineare Grammatik, die dieselbe Sprache erzeugt. \\
+    Rechts- und linkslineare Regeln dürfen nicht vermischt werden, sonst können auch Sprachen erzeugt werden, die nicht vom Typ-3 sind.
+  \end{block}
+  
+  \begin{exampleblock}{$\mathcal{L} = \{w \in \Sigma^* \;|\; w = a^nb^n, n \in \mathbb{N}\}$}
+    \[\mathcal{G = (N, T, R, S)}\]
+    mit
+    \[\begin{tabular}{l c l}
+      $\mathcal{N}$ & = & $\{S\}$ \\
+      $\mathcal{T}$ & = & $\{a, b\}$ \\
+      $\mathcal{R}$ & : & $S \rightarrow aA \;|\; \epsilon$ \\
+                    &   & $A \rightarrow Sb$ \\
+      $\mathcal{S}$ & = & $S$ \\
+      \end{tabular}\]
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{block}{Typ-2 Grammatik (Kontext-freie Sprachen)}
+    Sei 
+    \[\mathcal{G = (N, T, R, S)}.\] \\
+    $\mathcal{G}$ ist vom Typ-2, wenn die Produktionen folgende Form haben:
+    \[\begin{array}{l c l}
+        A & \rightarrow & w \\
+      \end{array}\]
+    mit
+    \begin{itemize}
+      \item<1-> $A \in \mathcal{N}$
+      \item<1-> $w \in (\mathcal{N} \cup \mathcal{T})^*$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{block}{Typ-1 Grammatik (Kontext-sensitive Sprachen)}
+    Sei 
+    \[\mathcal{G = (N, T, R, S)}.\] \\
+    $\mathcal{G}$ ist vom Typ-1, wenn die Produktionen folgende Form haben:
+    \[\begin{array}{l c l}
+        uAv & \rightarrow & u \phi v \\
+      \end{array}\]
+    mit
+    \begin{itemize}
+      \item<1-> $A \in \mathcal{N}$
+      \item<1-> $u, v \in (\mathcal{N} \cup \mathcal{T})^*$
+      \item<1-> $\phi \in (\mathcal{N} \cup \mathcal{T})^+$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{block}{Typ-0 Grammatik (Rekursiv aufzählbare Sprachen)}
+    Sei 
+    \[\mathcal{G = (N, T, R, S)}.\] \\
+    $\mathcal{G}$ ist vom Typ-0, wenn die Produktionen folgende Form haben:
+    \[\begin{array}{l c l}
+        u & \rightarrow & v \\
+      \end{array}\]
+    mit
+    \begin{itemize}
+      \item<1-> $u \in (\mathcal{N} \cup \mathcal{T})^+$
+      \item<1-> $v \in (\mathcal{N} \cup \mathcal{T})^*$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{block}{Erzeugte Sprache}
+    Sei 
+    \[\mathcal{G = (N, T, R, S)}.\]
+    Die von $\mathcal{G}$ erzeugte Sprache ist
+    \[\mathcal{L(G)} = \{w \in \Sigma^* \;|\; \mathcal{S} \overset{*}{\rightarrow} w\}.\]
+    "$\overset{*}{\rightarrow}$" bezeichnet eine Folge von Ableitungsschritten.
+  \end{block}
+  
+  \begin{block}{Definition : Ableitungsschritt}
+    Ein Ableitungsschritt ist das Anwenden einer Produktion auf eine Satzform, z.B.:
+    \begin{itemize}
+      \item<2-> $r_1 : A \rightarrow aBc$
+      \item<2-> $w = xyz \underline{A} zyx$
+    \end{itemize}
+    $w \overset{r_1}{\rightarrow} w'$ mit $w' = xyz\underline{aBc}zyx$.
+  \end{block}
+\end{frame}
+
+
+\subsection{Mehrdeutigkeit}
+\begin{frame}[squeeze]{}
+  \begin{block}{Definition: Mehrdeutigkeit}
+    Eine Grammatik ist mehrdeutig, wenn es ein Wort gibt, für das unterschiedliche Ableitungsbäume existieren. \\
+    \vspace*{0.5em}
+    Ob eine Grammatik mehrdeutig ist, ist \textbf{im Allgemeinen nicht entscheidbar}. Es existiert also kein Algorithmus, der zu jeder Grammatik entscheiden kann, ob sie mehrdeutig ist. \\
+    \vspace*{0.5em}
+    Dennoch ist es unter Vorgabe einer konkreten Grammatik möglich, zu entschieden, ob diese mehrdeutig ist oder nicht.
+  \end{block}
+  
+  \pause
+  
+  \begin{block}{Nicht-Determinismus in Grammatiken}
+    Grammatiken sind nicht-deterministisch, da die angewendeten Produktionsregeln zufällig ausgewählt werden. \\
+    \vspace*{0.5em}
+    Soll eine Grammatik deterministisch sein, so darf es immer nur eine Produktionsregel zur Auswahl geben.
+  \end{block}
+\end{frame}
+
+\subsection{Chomsky Normalform}
+\begin{frame}[squeeze]{}
+  \vspace*{-0.25em}
+  \begin{block}{\textsc{Chomsky} Normalform (CNF)}
+    Eine Grammatik $\mathcal{G} = \left( \mathcal{N}, \mathcal{T}, \mathcal{R}, \mathcal{S} \right)$ ist in \textsc{Chomsky} Normalform, wenn alle Produktionen folgende Form haben:
+    \vspace*{-0.5em}
+    \[\begin{array}{l c l}
+        A & \rightarrow & BC \\
+        A & \rightarrow & a \\
+      \end{array}\] \\
+    \vspace*{-0.5em}
+    Jede Grammatik vom Typ 2 kann in die \textsc{Chomsky} Normalform überführt werden. Dasselbe gilt wegen $\mathcal{L}_3 \subsetneq \mathcal{L}_2$ auch für Grammatiken vom Typ 3. \\
+    \vspace*{0.5em}
+    Liegt eine Grammatik in CNF vor, so kann mit Hilfe des CYK-Algorithmus das Wortproblem relativ leicht entschieden werden.
+  \end{block}
+  
+  \pause
+  \vspace*{-0.5em}
+  
+  \begin{block}{Das Wortproblem}
+    Das Wortproblem bezeichnet die Aufgabe, von einem gegebenen Wort $w$ zu entscheiden, ob es zu einer Sprache $L$ gehört oder nicht, also
+    \vspace*{-0.5em}
+    \[w \overset{?}{\in} L.\] \\
+    \vspace*{-0.5em}
+    Das Wortproblem ist für Sprachen der Typen 3, 2, 1 entscheidbar, für Sprachen vom Typ 0 im Allgemeinen aber nicht.
+  \end{block}
+\end{frame}
+
+\subsection{Transformation nach CNF}
+\begin{frame}[squeeze]{}
+  \vspace*{-0.25em}
+  \begin{alertblock}{Vereinbarung}
+    Im folgenden soll gelten: \\
+    \vspace*{0.5em}
+    Großbuchstaben $A, B, \ldots$ bezeichnen Nichtterminale mit $A, B, \ldots \in \mathcal{N}$. \\
+    \vspace*{0.5em}
+    Die Kleinbuchstaben $a, b, c$ bezeichnen Terminale mit $a, b, c \in \mathcal{T}$. \\
+    \vspace*{0.5em}
+    Die Kleinbuchstaben $u, v$ bezeichnen Satzformen mit $u, v \in \left( \mathcal{N} \cup \mathcal{T} \right)^*$
+  \end{alertblock}
+  
+  \pause
+  \vspace*{-0.25em}
+  
+  \begin{exampleblock}{Hinweis}
+    Bei der Transformation einer Grammatik nach CNF sollte in der hier beschriebenen Reihenfolge vorgegangen werden.
+    \begin{enumerate}
+      \item Elimination von $\epsilon$-Produktionen
+      \item Elimination von Einheitsproduktionen
+      \item Transformation der Produktionen in korrekte Form
+    \end{enumerate}
+    Da bei der Elimination von $\epsilon$-Produktionen Einheitsproduktionen entstehen können, sollte dieser Schritt durchgeführt werden, bevor die Einheitsproduktionen eliminiert werden. \\
+    \vspace*{0.5em}
+    Außerdem: Grammatiken in CNF können nicht das leere Wort erzeugen.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \vspace*{-0.25em}
+  \begin{block}{Elimination von $\epsilon$-Produktionen}
+    \begin{itemize}
+      \item Auswählen einer $\epsilon$-Produktion
+      \item Anwenden der Produktion in allen anderen Produktionen und Aufnehmen der entstehenden Regeln in die Grammatik
+      \item Löschen der ausgewählten $\epsilon$-Produktion
+    \end{itemize}
+    \[\mathcal{R} \leftarrow \left[ \mathcal{R} \cup \left\{ A \to uv \ | \ \left(A, uBv \right), \left( B, \epsilon\right) \in \mathcal{R} \right\} \right] \setminus \left\{ \left( B, \epsilon \right) \right\} \]
+    \pause
+    Es können auch Regeln existieren, die mehrfache Vorkommen von Nichtterminalen enthalten, die nach $\epsilon$ abgeleitet werden können. \\
+    Dann muss jede mögliche Kombination von $\epsilon$-Ableitungen durchgeführt werden. \pause Aus
+    \[\begin{array}{l c l}
+        A & \rightarrow & BCDCE \ | \ CC \\
+        C & \rightarrow & \epsilon \\
+      \end{array}\] \\
+    \vspace*{-0.75em}
+    wird dann
+    \[\begin{array}{l c l}
+        A & \rightarrow & BCDCE \ | \ BDCE \ | \ BCDE \ | \ BDE \ | \ CC \ | \ C \ | \ \epsilon. \\
+      \end{array}\] \\
+    \pause
+    \vspace*{-0.5em}
+    Vorgriff auf Compilerbau: Ein Nichtterminal $A$ mit $A \overset{\ast}{\to} \epsilon$ wird als \enquote{nullable} bezeichnet.
+  \end{block}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{Elimination von Einheitsproduktionen}
+    \begin{itemize}
+      \item Auswählen einer Einheitsproduktion
+      \item Einsetzen aller möglichen rechten Seiten und Aufnehmen der entstehenden Regeln in die Grammatik
+      \item Löschen der ausgewählten Einheitsproduktion
+    \end{itemize}
+    \[\mathcal{R} \leftarrow \left[ \mathcal{R} \cup \left\{ A \to u \ | \ \left(A, B \right), \left( B, u \right) \in \mathcal{R} \right\} \right] \setminus \left\{ \left( A, B \right) \right\} \]
+    \pause
+    Aus
+    \[\begin{array}{l c l}
+        A & \rightarrow & B \\
+        B & \rightarrow & CD \ | \ EFG \ | \ a \ | \ bc \\
+      \end{array}\] \\
+    \vspace*{-0.75em}
+    wird dann
+    \[\begin{array}{l c l}
+        \hspace*{0.45em} A & \rightarrow & CD \ | \ EFG \ | \ a \ | \ bc. \\
+      \end{array}\] \\
+  \end{block}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{Transformation von Produktionen}
+    \begin{itemize}
+      \item Produktionen der Form $A \to a$ müssen nicht verändert werden
+      \pause
+      \item Für Produktionen der Form $A \to bc$ werden zwei neue Nichtterminale eingefügt mit
+            \[\begin{array}{l c l}
+              A & \to & BC \\
+              B & \to & b \\
+              C & \to & c \\
+            \end{array}\]
+      \pause
+      \item Für Produktionen der Form $A \to uv$ mit $|u| = 1, |v| > 1$ wird eine neue Variable eingefügt mit
+            \begin{enumerate}
+              \item Wenn $u \in \mathcal{N}$
+                    \vspace*{-0.25em}
+                    \[\begin{array}{l c l}
+                      A & \to & uB \\
+                      B & \to & v \\
+                    \end{array}\]
+              \item Wenn $u \in \mathcal{T}$
+                    \vspace*{-0.25em}
+                    \[\begin{array}{l c l}
+                      A & \to & UB \\
+                      B & \to & v \\
+                      U & \to & u \\
+                    \end{array}\]
+            \end{enumerate}
+            Die Regel $A \to uv$ wird dann gelöscht.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\subsection{Feinere Unterteilung der Sprachklassen}
+\begin{frame}[squeeze]{}
+  \begin{alertblock}{Vereinbarung}
+    Im Folgenden bezeichne
+    \begin{itemize}
+      \item $\mathcal{L}_{i, D}$ die Menge der Deterministischen Typ-i-Sprachen
+      \item $\mathcal{L}_{i, N}$ die Menge der Nicht-Deterministischen Typ-i-Sprachen
+    \end{itemize}
+  \end{alertblock}
+  
+  \pause
+  
+  \begin{block}{Reguläre Sprachen (Typ-3)}
+    \[\mathcal{L}_{3, D} = \mathcal{L}_{3, N}\]
+    Dies ist leicht einzusehen, da zu jedem \textbf{NEA} ein äquivalenter \textbf{DEA} angegeben werden kann.
+  \end{block}
+\end{frame}
+
+\begin{frame}[<+->][squeeze]{}  
+  \begin{block}{Kontext-freie Sprachen (Typ-2)}
+    \[\mathcal{L}_{2, D} \subsetneq \mathcal{L}_{2, N}\]
+    \textbf{NKA} sind mächtiger als \textbf{DKA}.
+  \end{block}
+  
+  \begin{block}{Kontext-Sensitive Sprachen (Typ-1)}
+    \[\mathcal{L}_{1, D} \overset{?}{\subseteq} \mathcal{L}_{1, N}\]
+    Es ist bisher nicht bekannt, ob die Inclusion echt oder unecht ist.
+  \end{block}
+  
+  \begin{block}{Rekursiv Aufzählbare Sprachen (Typ-0)}
+    \[\mathcal{L}_{0, D} = \mathcal{L}_{0, N}\]
+    \textbf{NDTM} können durch \textbf{DTM} simuliert werden, was im Allgemeinen exponentielle Zeit benötigt.
+  \end{block}
+\end{frame}
+
+\begin{frame}[<+->][squeeze]{}  
+  \begin{block}{Rekursiv Aufzählbare Sprachen $\mathcal{L}_{re}$}
+    Sei $\mathcal{L} \subseteq \Sigma^*, x \in \mathcal{L}, \mathcal{M}$ eine \textbf{TM} mit $\mathcal{L_M} = \mathcal{L}$. \\
+    $\mathcal{L}$ ist Rekursiv Aufzählbar, wenn gilt
+    \[\mathcal{M}(x) = \left\{\begin{array}{l l}
+                                1        & $wenn $ x \in \mathcal{L} \\
+                                \nearrow & $sonst$ \\
+                              \end{array}\right.\]
+    \begin{center}
+      $\mathcal{M}$ \textbf{erkennt} $\mathcal{L}$.
+    \end{center}
+  \end{block}
+  
+  \begin{block}{Rekursive Sprachen $\mathcal{L}_r$}
+    Sei $\mathcal{L} \subseteq \Sigma^*, x \in \mathcal{L}, \mathcal{M}$ eine \textbf{TM} mit $\mathcal{L_M} = \mathcal{L}$. \\
+    $\mathcal{L}$ ist Rekursiv wenn gilt
+    \[\mathcal{M}(x) = \left\{\begin{array}{l l}
+                                1 & $wenn $ x \in \mathcal{L} \\
+                                0 & $wenn $ x \notin \mathcal{L} \\
+                              \end{array}\right.\]
+    \begin{center}
+      $\mathcal{M}$ \textbf{entscheidet} $\mathcal{L}$.
+    \end{center}
+  \end{block}
+\end{frame}
+
+%\begin{frame}[<+->][squeeze]{}  
+%  \begin{block}{Zusammenhang}
+%    Es gilt
+%    \[\mathcal{L}_3 \subsetneq \mathcal{L}_2 \subsetneq \mathcal{L}_1 \subsetneq \mathcal{L}_0.\]
+%    Außerdem gilt
+%    \begin{itemize}
+%      \item<1-> $\mathcal{L}_{3, D} = \mathcal{L}_{3, N} = \mathcal{L}_3$
+%      \item<1-> $\mathcal{L}_{2, D} \subsetneq \mathcal{L}_{2, N} = \mathcal{L}_2$
+%      \item<1-> $\mathcal{L}_{1, D} \overset{?}{\subseteq} \mathcal{L}_{1, N} = \mathcal{L}_1$
+%      \item<1-> $\mathcal{L}_{0, D} = \mathcal{L}_{0, N} = \mathcal{L}_0$
+%      \item<1-> $\mathcal{L}_r \subsetneq \mathcal{L}_{re} = \mathcal{L}_0$
+%    \end{itemize}
+%    $\Rightarrow$
+%    \[\mathcal{L}_{3, D} = \mathcal{L}_{3, N} = \mathcal{L}_3 \subsetneq \mathcal{L}_{2, D} \subsetneq \mathcal{L}_{2, N} = \mathcal{L}_2 \subsetneq \mathcal{L}_{1, D} \overset{?}{\subseteq} \mathcal{L}_{1, N} = \mathcal{L}_1\] \[\mathcal{L}_1 \subsetneq \mathcal{L}_r \subsetneq \mathcal{L}_{0, D} = \mathcal{L}_{0, N} = \mathcal{L}_{re} = \mathcal{L}_0\]
+%  \end{block}
+%\end{frame}
+
+\end{document}

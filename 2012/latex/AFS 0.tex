@@ -1,0 +1,399 @@
+\documentclass[]{beamer}
+\usepackage[utf8x]{inputenc}
+\usepackage{beamerthemeshadow}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{graphicx}
+\usepackage{textpos}
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{color}
+\usepackage{tikz}
+\usetikzlibrary{shapes,backgrounds}
+
+\usetheme[compress]{Berlin}
+\usefonttheme{default}
+\useoutertheme{infolines}
+
+\setbeamertemplate{footline}%{infolines theme}
+{
+\leavevmode%
+\hbox{%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+\usebeamerfont{author in head/foot}\insertshortauthor%~~(\insertshortinstitute)
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+\usebeamerfont{title in head/foot}\insertshorttitle
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{date in head/foot}%
+\usebeamerfont{date in head/foot}\insertshortdate{}
+%\insertframenumber{} / \inserttotalframenumber\hspace*{2ex} % ohne Seitenzahlen
+\end{beamercolorbox}}%
+\vskip0pt%
+}
+
+\setbeamertemplate{frametitle}
+{%
+\vbox{}\vskip-3.9ex
+\begin{beamercolorbox}[wd=\paperwidth,ht=2.0ex,leftskip=0.4cm,dp=0.6ex,]{frametitle}
+\usebeamerfont{header_font_title}{\insertframetitle}
+\end{beamercolorbox}%
+}
+
+% Schusterjunge & Hurenkind
+\clubpenalty = 10000
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
+\hbadness = 10000
+
+\author[Christopher Blöcker, B. Sc.]{Christopher Blöcker, B. Sc.\\ inf9900@fh-wedel.de}
+\title[AFS Tutorium]{Tutorium\\Automaten und Formale Sprachen}
+\date{SS 2012}
+\subtitle{Teil 0.}
+\subject{Automaten und Formale Sprachen}
+\begin{document}
+
+\begin{frame}{}
+  \titlepage
+\end{frame}
+
+
+
+\section{Vollständige Induktion}
+
+\subsection{Prinzip}
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{alertblock}{Aufgabe}
+    Es sei eine Aussage der Form
+    \[\bigwedge_{x \in \mathbb{N}} h \left( x \right)\]
+    zu beweisen, dabei sei $h$ ein Prädikat.
+  \end{alertblock}
+  
+  \begin{block}{Satz}
+    \[\underbrace{h \left( 0 \right)}_{\text{Verankerung}}
+      \land
+      \underbrace{\bigwedge_{n \in \mathbb{N}} \left[h \left( n \right) \rightarrow h \left( \sigma \left( n \right) \right)\right]}_{\text{Schritt}} 
+      \rightarrow 
+      \underbrace{\bigwedge_{n \in \mathbb{N}} h \left( n \right)}_{Schluss}\] 
+    Dabei bezeichne $\sigma \left( n \right)$ den Nachfolger von $n$.
+  \end{block}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{Satz}
+    \[\underbrace{h \left( 0 \right)}_{\text{Verankerung}}
+      \land
+      \underbrace{\bigwedge_{n \in \mathbb{N}} \left[h \left( n \right) \rightarrow h \left( \sigma \left( n \right) \right)\right]}_{\text{Schritt}} 
+      \rightarrow 
+      \underbrace{\bigwedge_{n \in \mathbb{N}} h \left( n \right)}_{Schluss}\] 
+    Dabei bezeichne $\sigma \left( n \right)$ den Nachfolger von $n$.
+  \end{block}
+  
+  \begin{block}{Satz (in Worten)}
+    Sei $h \left( x \right)$ eine Aussageform über der Menge der natürlichen Zahlen. \\ 
+    \vspace*{1em}
+    Wenn $h \left( 0 \right)$ wahr ist \hfill \textit{Verankerung} \\
+    \vspace*{0.5em}
+    \pause
+    \textbf{und} \\
+    \vspace*{0.5em}
+    wenn für jedes beliebige $n \in \mathbb{N}$ aus der Wahrheit von $h \left( n \right)$ \\ stets die Wahrheit von $h \left( \sigma \left( n \right) \right)$ folgt, \hfill \textit{Schritt} \\
+    \vspace*{0.5em}
+    \pause
+    \textbf{dann} \\
+    \vspace*{0.5em}
+    gilt die Aussage für alle natürlichen Zahlen. \hfill \textit{Schluss}
+  \end{block}
+\end{frame}
+
+\subsection{\textsc{Peano}'sches Axiomensystem}
+\begin{frame}[squeeze]{}
+  \begin{block}{Beispiel: \textsc{Peano}'sches Axiomensystem}
+    Axiomatische Definition der Menge der Natürlichen Zahlen $\mathbb{N}$.
+    \begin{enumerate}
+      \item \textbf{Verankerung}: Es gelte $0 \in \mathbb{N}$
+      \vspace*{1em}
+      \item $\sigma \colon \mathbb{N} \to \mathbb{N}$ sei eine Funktion, die jedem $n \in \mathbb{N}$ einen (eindeutigen!) Nachfolger zuordnet
+      \vspace*{1em}
+      \item $\sigma$ sei injektiv, also $\sigma \left( m \right) = \sigma \left( n \right) \to m = n$
+      \vspace*{1em}
+      \item $0$ ist Nachfolger keiner natürlichen Zahl, d.h. $\underset{n \in \mathbb{N}}{\bigwedge} \sigma \left( n \right) \neq 0$
+      \vspace*{1em}
+      \item \textbf{Induktionsaxiom}: Jedes $n \in \mathbb{N}$ kann durch endlich häufige Anwendung von $\sigma$ auf $0$ erzeugt werden $n = \underbrace{\left( \sigma \circ \ldots \circ \sigma \right)}_{n \text{ mal}} \left( 0 \right)$
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+
+
+\section{Mengenlehre}
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{block}{Mengendefinition nach \textsc{Cantor}}
+    Eine Menge ist eine Zusammenfassung bestimmter wohlunterschiedener
+    Objekte unserer Anschauung oder unseres Denkens zu einem Ganzen. Von jedem
+    dieser Objekte muss eindeutig feststehen, ob es zur Menge gehört oder nicht.
+    Die zur Menge gehörenden Objekte nennt man die Elemente der Menge.
+  \end{block}
+  
+  \begin{alertblock}{Notwendig}
+    Wir fordern, dass die Elemente auf Gleichheit getestet werden können.
+  \end{alertblock}  
+  
+  \begin{block}{Mengenoperationen}
+    \[\begin{array}{l c l}
+        \mathcal{A} \subseteq \mathcal{B} & \Leftrightarrow & \underset{a \in \mathcal{A}}{\bigwedge} a \in \mathcal{B} \vspace*{0.25em}\\
+        \mathcal{A} \cap      \mathcal{B} & \Leftrightarrow & \{ \ x \ | \ x \in \mathcal{A} \ \land \ x \in    \mathcal{B} \ \} \\
+        \mathcal{A} \cup      \mathcal{B} & \Leftrightarrow & \{ \ x \ | \ x \in \mathcal{A} \ \vee   \ x \in    \mathcal{B} \ \} \\
+        \mathcal{A} \setminus \mathcal{B} & \Leftrightarrow & \{ \ x \ | \ x \in \mathcal{A} \ \land \ x \notin \mathcal{B} \ \} \\
+        \mathcal{A} \triangle \mathcal{B} & \Leftrightarrow & \left( \mathcal{A} \cup \mathcal{B} \right) \setminus \left( \mathcal{A} \cap \mathcal{B} \right) \\
+      \end{array}\]
+  \end{block}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \def\firstcircle{(0,0) circle (1.5cm)}
+  \def\secondcircle{(0:2cm) circle (1.5cm)}
+  \def\thirdcircle{(6,0) circle (1.5cm)}
+  \def\fourthcircle{(8,0) circle (1.5cm)}
+
+  \colorlet{circle edge}{blue!50}
+  \colorlet{circle area}{blue!20}
+
+  \tikzset{filled/.style={ fill=circle area, draw=circle edge, thick}
+                         , outline/.style={draw=circle edge, thick}
+                         }
+
+  \setlength{\parskip}{5mm}
+  
+  \vspace*{-1em}
+  \begin{center}
+  % Set A and B
+  \begin{tikzpicture}
+    \begin{scope}
+        \clip \firstcircle;
+        \fill[filled] \secondcircle;
+    \end{scope}
+    \draw[outline] \firstcircle node {$\mathcal{A}$};
+    \draw[outline] \secondcircle node {$\mathcal{B}$};
+    \node[anchor=south] at (current bounding box.north) {$\mathcal{A} \cap \mathcal{B}$};
+    
+    
+    \draw[filled] \thirdcircle node {$\mathcal{A}$}
+                  \fourthcircle node {$\mathcal{B}$};
+    \node[anchor=south] at (7,1.5) {$\mathcal{A} \cup \mathcal{B}$};
+  \end{tikzpicture}
+
+  % Set A but not B
+  \begin{tikzpicture}
+    \begin{scope}
+        \clip \firstcircle;
+        \draw[filled, even odd rule] \firstcircle node {$\mathcal{A}$}
+                                     \secondcircle;
+    \end{scope}
+    \draw[outline] \firstcircle
+                   \secondcircle node {$\mathcal{B}$};
+    \node[anchor=south] at (current bounding box.north) {$\mathcal{A} \setminus \mathcal{B}$};
+    
+    
+    \draw[filled, even odd rule] \thirdcircle node {$\mathcal{A}$}
+                                 \fourthcircle node{$\mathcal{B}$};
+    \node[anchor=south] at (7,1.5) {$\mathcal{A} \Delta \mathcal{B}$};
+  \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{alertblock}{Frage}
+    Es existiere ein Dorf, in dem es verboten sei, einen Bart zu tragen und
+    \begin{enumerate}
+      \item<0-> der Dorfbarbier denjenigen Männern den Bart schneide, die sich \textbf{nicht} selbst den Bart schneiden und
+      \item<0-> der Dorfbarbier der einzige Mann sei.
+    \end{enumerate}
+    $\mathcal{M}$ sei die Menge der Männer, denen der Dorfbarbier den Bart schneidet, \\ $x$ sei der Dorfbarbier. \\
+    \[x \overset{?}{\in} \mathcal{M} \text{ bzw } \mathcal{M} \overset{?}{=} \emptyset\]
+  \end{alertblock}
+  
+  \begin{exampleblock}{Antwort}
+    Die Frage ist unentscheidbar, denn
+    \[x \in \mathcal{M} \Leftrightarrow x \notin \mathcal{M}.\]
+  \end{exampleblock}
+\end{frame}
+
+\section{Relationen}
+\begin{frame}[<+->][squeeze]{}
+  \begin{definition}
+    Eine ($2$-stellige) Relation zwischen den Mengen $\mathcal{M}$ und $\mathcal{N}$ ist eine
+Teilmenge $\mathcal{R}$ der Produktmenge $\mathcal{M} \times \mathcal{N}$.
+    \[\mathcal{R} \subseteq \mathcal{M} \times \mathcal{N}.\]
+    Dabei steht $m \in \mathcal{M}$ mit $n \in \mathcal{N}$ in Relation, wenn
+    \[(m, n) \in \mathcal{R}.\]
+    Man schreibt dafür auch
+    \[m \overset{\mathcal{R}}{\sim} n \text{ oder } m\mathcal{R}n.\]
+  \end{definition}
+\end{frame}
+
+\subsection{Äquivalenzrelation}
+\begin{frame}[<+->][squeeze]{}
+  \begin{block}{Äquivalenzrelation}
+    Sei $\mathcal{R} \subseteq \mathcal{M}^2$. $\mathcal{R}$ definiert eine Äquivalenzrelation, wenn gilt
+    \begin{enumerate}
+      \item Reflexivität : \hspace{8pt} $\underset{x \in \mathcal{M}}{\bigwedge} x \overset{\mathcal{R}}{\sim} x$
+      \item Symmetrie : \hspace{7pt} $\underset{x, y \in \mathcal{M}}{\bigwedge} (x \overset{\mathcal{R}}{\sim} y) \rightarrow (y \overset{\mathcal{R}}{\sim} x)$
+      \item Transitivität : $\underset{x, y, z \in \mathcal{M}}{\bigwedge} [(x \overset{\mathcal{R}}{\sim} y) \land (y \overset{\mathcal{R}}{\sim} z)] \rightarrow (x \overset{\mathcal{R}}{\sim} z)$
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\subsection{Ordnungsrelation}
+\begin{frame}[squeeze]{}
+  \vspace*{-0.25em}
+  \begin{block}{Ordnungsrelation}
+    Sei $\mathcal{R} \subseteq \mathcal{M}^2$. $\mathcal{R}$ definiert eine Halbordnung, wenn gilt
+    \pause
+    \begin{enumerate}
+      \item \hspace*{4pt}Reflexivität : \hspace{15pt} $\underset{x \in \mathcal{M}}{\bigwedge} x \overset{\mathcal{R}}{\sim} x$ \\
+        \hspace*{-22pt}\textbf{oder} Irreflexivität : \hspace{12pt} $\underset{x \in \mathcal{M}}{\bigwedge} x \overset{\mathcal{R}}{\nsim} x$
+        \pause
+      \item \hspace*{4pt}Antisymmetrie : $\underset{x, y \in \mathcal{M}}{\bigwedge} [(x \overset{\mathcal{R}}{\sim} y) \land (y \overset{\mathcal{R}}{\sim} x)] \rightarrow (x = y)$ \\
+        \hspace*{-22pt}\textbf{oder} Asymmetrie : \hspace{9pt} $\underset{x, y \in \mathcal{M}}{\bigwedge} (x \overset{\mathcal{R}}{\sim} y) \rightarrow (x \neq y)$
+        \pause
+      \item \hspace*{4pt}Transitivität : \hspace{4pt} $\underset{x, y, z \in \mathcal{M}}{\bigwedge} [(x \overset{\mathcal{R}}{\sim} y) \land (y \overset{\mathcal{R}}{\sim} z)] \rightarrow (x \overset{\mathcal{R}}{\sim} z)$
+        \pause
+    \end{enumerate}
+  \end{block}
+  \vspace*{-0.5em}
+  \begin{definition}
+    Ist zusätzlich die Eigenschaft der Linearität erfüllt, so definiert $\mathcal{R}$ eine Totalordnung.
+    \begin{enumerate}
+      \item Linearität : $\underset{x, y \in \mathcal{M}}{\bigwedge} (x \overset{\mathcal{R}}{\sim} y) \vee (y \overset{\mathcal{R}}{\sim} x)$
+    \end{enumerate}
+  \end{definition}
+\end{frame}
+
+\section{Algebraische Strukturen}
+\begin{frame}[squeeze]{}
+  \vspace*{-0.25em}
+  \begin{block}{Algebraische Struktur}
+    Eine algebraische Struktur ist ein Paar, bestehend aus einer Menge $\mathcal{M}$ und einer Familie von $n_i$-stelligen Verknüpfungen $f_i$ auf den Elementen der Menge mit $f_i \colon \mathcal{M}^{n_i} \to \mathcal{M}$.
+    \[\left(\mathcal{M}, \left( f_i \right) \right)\]
+  \end{block}
+  \vspace*{-0.5em}
+  
+  \pause  
+  
+  \begin{block}{Gruppoid}
+    Ein Gruppoid besteht aus einer Menge $\mathcal{M}$ und einer inneren, binären Verknüpfung $\ast \colon \mathcal{M} \times \mathcal{M} \to \mathcal{M}$.
+    \begin{enumerate}
+      \item $\left( \mathbb{Z}, - \right)$
+      \item $\left( \mathbb{N}, \ast \left(a, b \right) = a^b \right)$
+    \end{enumerate}
+  \end{block}
+  \vspace*{-0.5em}
+  
+  \pause  
+  
+  \begin{block}{Halbgruppe}
+    Eine Halbgruppe besteht aus einer Menge $\mathcal{M}$ und einer inneren, binären, \textbf{assoziativen} Verknüpfung $\ast \colon \mathcal{M} \times \mathcal{M} \to \mathcal{M}$. \\
+    Es muss gelten \[\bigwedge_{a, b, c \in \mathcal{M}} a \ast \left( b \ast c \right) = \left( a \ast b \right) \ast c\]
+  \end{block}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \vspace*{-0.25em}
+  \begin{block}{Monoid}
+    Ein Monoid ist eine Halbgruppe mit ausgezeichnetem neutralen Element $e$: $(\mathcal{M}, *, e)$ mit \vspace*{-0.25em}
+      \[\bigwedge_{a \in \mathcal{M}} e * a = a = a * e\]
+  \end{block}
+  \vspace*{-0.5em}
+  \pause
+  
+  \begin{block}{Gruppe}
+    Eine Gruppe ist ein Monoid mit einer zusätzlichen unären Operation $\text{}^{-1}\colon \mathcal{M} \to \mathcal{M}$, die zu jedem Element das inverse bezüglich $\ast$ bestimmt: $\left( \mathcal{M}, \ast, e, \text{}^{-1} \right)$. \vspace*{-0.25em}
+    \[\bigwedge_{a \in \mathcal{M}} a \ast a^{-1} = e = a^{-1} \ast a\]
+  \end{block}
+  \vspace*{-0.5em}
+  
+  \pause
+  
+  \begin{block}{\textsc{Abel}'sche Gruppe}
+    Eine \textsc{abel}'sche Gruppe ist eine Gruppe mit einer \textbf{kommutativen} Operation $\ast\colon \mathcal{M} \times \mathcal{M} \to \mathcal{M}$ mit \vspace*{-0.25em}
+    \[\bigwedge_{a, b \in \mathcal{M}} a \ast b = b \ast a\]
+  \end{block}
+\end{frame}
+
+\section{Zahlentheorie}
+\subsection{kgV und ggT}
+\begin{frame}[<+->][squeeze]{}
+  \begin{definition}
+    Seien $m, n$ zwei beliebige Zahlen in $\mathbb{N}$.
+    \vspace*{0.5em}\\
+    Die Zahl $d \in \mathbb{N}$ heisst \textbf{größter gemeinsamer Teiler} der Zahlen $m$ und $n$ (kurz: \textbf{ggT}), wenn gilt:
+    \[\left( d \, | \, m \right) \land \left( d \, | \, n \right) \land \underset{t \in \mathbb{N}}{\bigwedge} \left[ \left( t \, | \, m \right) \land \left( t \, | \, n \right) \rightarrow \left( t \, | \, d \right) \right]\]
+  \end{definition}
+  
+  \begin{definition}
+    Seien $m, n$ zwei beliebige Zahlen in $\mathbb{N}$. \vspace*{0.5em}
+    \\
+    Die Zahl $k \in \mathbb{N}$ heisst \textbf{kleinstes gemeinsames Vielfaches} der Zahlen $m$ und $n$ (kurz: \textbf{kgV}), wenn gilt:
+    \[\left( m \, | \, k \right) \land \left( n \, | \, k \right) \land \underset{s \in \mathbb{N}}{\bigwedge} \left[ \left( m \, | \, s \right) \land \left( n \, | \, s \right) \rightarrow \left( k \, | \, s \right) \right]\]
+  \end{definition}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \vspace*{-0.25em}
+  \begin{block}{Zusammenhang von kgV und ggT}
+    Zwischen $\mathrm{ggT} \left( m, n \right)$ und $\mathrm{kgV} \left( m, n \right)$ zweier Zahlen $m, n \in \mathbb{N}$ besteht der folgende Zusammenhang: \vspace*{-0.5em}
+    \[\mathrm{ggT} \left( m, n \right) \cdot \mathrm{kgV} \left( m, n \right) = m \cdot n\]
+  \end{block}
+  \vspace*{-0.5em}
+  \pause
+  
+  \begin{exampleblock}{Berechnung}
+    Der \textbf{ggT} zweier Zahlen lässt sich mit Hilfe des \textsc{Euklidischen Algorithmus} berechnen.
+  \end{exampleblock}
+  \vspace*{-0.5em}
+  \pause
+  
+  \begin{block}{Berechnung von $\mathrm{ggT} \left( m, n \right)$ mit $m, n \in \mathbb{N}, m \geq n$}
+    \[\begin{array}{ c c c c c}
+      m &= &q_0 \cdot n &+ &r_0 \\
+      \pause
+      n &= &q_1 \cdot r_0 &+ &r_1 \\
+      \pause
+      \vdots & & \vdots & & \vdots \\
+      r_{n-1} &= &q_n \cdot r_n &+ &0 \\
+    \end{array}\]
+    \pause
+    Es gilt: $\mathrm{ggT} \left(m, n \right) = r_{n-1}$.
+  \end{block}
+\end{frame}
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{exampleblock}{Euklidischer Algorithmus (C - Rekursiv)}
+    \texttt{\textcolor{blue}{unsigned} ggt(\textcolor{blue}{unsigned} m, \textcolor{blue}{unsigned} n) \{ } \\
+    \texttt{$\ \ $ if (m $<$ n) \hspace*{0.12em} return ggt(n, m);} \\
+    \texttt{$\ \ $ if (n == 1) return 1;} \\
+    \texttt{$\ \ $ if (n == 0) return m;} \\
+    \texttt{$\ \ $ return ggt(n, m \% n);} \\
+    \}
+  \end{exampleblock}
+
+  \begin{exampleblock}{Euklidischer Algorithmus (Haskell)}
+    \texttt{module \textcolor{blue}{GGT} where} \\
+    \vspace*{0.5em}
+    \texttt{ggt \textbf{::} \textcolor{blue}{Integral} a => a -> a -> a} \\
+    ggt m n \\
+      \texttt{$\ \ |$ m $<$ n}   \hspace{22pt} \texttt{= ggt n m} \\
+      \texttt{$\ \ |$ n == 1}    \hspace{19pt} \texttt{= 1} \\
+      \texttt{$\ \ |$ n == 0}    \hspace{19pt} \texttt{= m} \\
+      \texttt{$\ \ |$ otherwise} \hspace{2pt} \texttt{= ggt n (m `mod` n)}
+  \end{exampleblock}
+\end{frame}
+
+\end{document}

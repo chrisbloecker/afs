@@ -1,0 +1,369 @@
+\documentclass[]{beamer}
+\usepackage[utf8x]{inputenc}
+\usepackage{beamerthemeshadow}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{graphicx}
+\usepackage{textpos}
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{color}
+\usepackage{stmaryrd}
+
+\usetheme[compress]{Berlin}
+\usefonttheme{default}
+\useoutertheme{infolines}
+
+\setbeamertemplate{footline}%{infolines theme}
+{
+\leavevmode%
+\hbox{%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+\usebeamerfont{author in head/foot}\insertshortauthor%~~(\insertshortinstitute)
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+\usebeamerfont{title in head/foot}\insertshorttitle
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{date in head/foot}%
+\usebeamerfont{date in head/foot}\insertshortdate{}
+%\insertframenumber{} / \inserttotalframenumber\hspace*{2ex} % ohne Seitenzahlen
+\end{beamercolorbox}}%
+\vskip0pt%
+}
+
+\setbeamertemplate{frametitle}
+{%
+\vbox{}\vskip-3.9ex
+\begin{beamercolorbox}[wd=\paperwidth,ht=2.0ex,leftskip=0.4cm,dp=0.6ex,]{frametitle}
+\usebeamerfont{header_font_title}{\insertframetitle}
+\end{beamercolorbox}%
+}
+
+% Schusterjunge & Hurenkind
+\clubpenalty = 10000
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
+\hbadness = 10000
+
+\author[Christopher Blöcker, B. Sc.]{Christopher Blöcker, B. Sc.\\ inf9900@fh-wedel.de}
+\title[AFS Tutorium]{Tutorium\\Automaten und Formale Sprachen}
+\date{SS 2012}
+\subtitle{Teil IV.}
+\subject{Automaten und Formale Sprachen}
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Wiederholung}
+\subsection{Mehrdeutigkeit}
+\begin{frame}[squeeze]{}
+  \begin{block}{Definition: Mehrdeutigkeit}
+    Eine Grammatik ist mehrdeutig, wenn es ein Wort gibt, für das unterschiedliche Ableitungsbäume existieren. \\
+    \vspace*{0.5em}
+    Ob eine Grammatik mehrdeutig ist, ist \textbf{im Allgemeinen nicht entscheidbar}. Es existiert also kein Algorithmus, der zu jeder Grammatik entscheiden kann, ob sie mehrdeutig ist. \\
+    \vspace*{0.5em}
+    Dennoch ist es unter Vorgabe einer konkreten Grammatik möglich, zu entschieden, ob diese mehrdeutig ist oder nicht.
+  \end{block}
+  
+  \pause
+  
+  \begin{block}{Nicht-Determinismus in Grammatiken}
+    Grammatiken sind nicht-deterministisch, da die angewendeten Produktionsregeln zufällig ausgewählt werden. \\
+    \vspace*{0.5em}
+    Soll eine Grammatik deterministisch sein, so darf es immer nur eine Produktionsregel zur Auswahl geben.
+  \end{block}
+\end{frame}
+
+\subsection{\textsc{Chomsky}-Hierarchie}
+\begin{frame}[squeeze]{}
+  \begin{block}{Die \textsc{Chomsky}-Hierarchie}
+    \textsc{Noam Chomsky} hat den Begriff der \textsc{Chomsky}-Hierarchie geprägt und die folgenden $4$ Sprachklassen definiert:
+    \begin{itemize}
+      \item Typ-3 : Reguläre Sprachen $\mathcal{L}_3$
+      \item Typ-2 : Kontext-Freie Sprachen $\mathcal{L}_2$
+      \item Typ-1 : Kontext-Sensitive Sprachen $\mathcal{L}_1$
+      \item Typ-0 : Rekursiv Aufzählbare Sprachen $\mathcal{L}_0$
+    \end{itemize}
+    \vspace*{0.5em}
+    \pause
+    Es gilt:
+    \[\mathcal{L}_3 \subsetneq \mathcal{L}_2 \subsetneq \mathcal{L}_1 \subsetneq \mathcal{L}_0\]
+    \pause
+    Jede dieser Sprachklassen lässt sich durch Grammatiken des jeweiligen Types erzeugen. Dabei unterliegen die Produktionen gewissen Restriktionen.
+  \end{block}
+  
+  \pause
+  
+  \begin{alertblock}{Anmerkung}
+    Es gibt (überabzählbar viele) Sprachen, die \textbf{nicht einmal} rekursiv aufzählbar sind!
+  \end{alertblock}
+\end{frame}
+
+\section{Kontext-freie Sprachen}
+\begin{frame}[squeeze]{}
+  \begin{alertblock}{Frage}
+    Wie lässt sich feststellen, ob
+      \[\mathcal{L} \in \mathcal{L}_2 \text{?}\]
+  \end{alertblock}
+  
+  \pause
+  
+  \begin{exampleblock}{Antwort}
+    Eine Sprache ist vom Typ-2, wenn sie von einem Kellerautomaten akzeptiert oder von einer kontext-freien Grammatik erzeugt wird. \\
+    Für den Nachweis $\mathcal{L} \in \mathcal{L}_2$ ist also ein Kellerautomat $\mathcal{A}$ oder eine Typ-2-Grammatik $\mathcal{G}$ anzugeben mit
+      \[\mathcal{L_A} = \mathcal{L} \text{ bzw. } \mathcal{L_G} = \mathcal{L}.\]
+    \\
+    \vspace*{0.5em}
+    Außerdem lassen sich kontext-freie Grammatiken in nichtdeterministische(!) Kellerautomaten (\textbf{NKA}) überführen.
+  \end{exampleblock}
+\end{frame}
+
+\subsection{Deterministischer Kellerautomat}
+\begin{frame}[squeeze]{}
+  \begin{definition}
+    Ein deterministischer Kellerautomat ist ein 6-Tupel.
+    \[\mathcal{A} = (\mathcal{Q}, \Sigma, \Gamma, \delta, q_0, \mathcal{F})\]
+    mit
+    \[\begin{array}{l l}
+        \mathcal{Q} & \text{endliche, nichtleere Menge von Zuständen} \\
+        \Sigma      & \text{endliche, nichtleere Menge, das Eingabealphabet mit} \\
+                    & \Sigma \cap \mathcal{Q} = \emptyset \text{ und } \Sigma_\epsilon = \Sigma \cup \{\epsilon\} \\
+        \Gamma      & \text{endliche, nichtleere Menge, das Kelleralphabet mit} \\
+                    & \perp \in \Gamma \text{ und } \Gamma_\epsilon = \Gamma \cup \{\epsilon\} \\
+        \delta      & \text{Überführungsfunktion mit } \\
+                    &\delta : \mathcal{Q} \times \Sigma_\epsilon \times \Gamma_\epsilon \rightarrow \mathcal{Q} \times \Gamma_\epsilon^*\\
+        q_0         & \text{Startzustand} \\
+        \mathcal{F} & \text{Menge von Endzuständen mit } \mathcal{F} \subseteq \mathcal{Q} \\
+      \end{array}\]
+  \end{definition}
+\end{frame}
+
+\subsection{Nichtdeterministischer Kellerautomat}
+\begin{frame}[squeeze]{}
+  \begin{definition}
+    Ein nichtdeterministischer Kellerautomat ist ein 6-Tupel.
+    \[\mathcal{A} = (\mathcal{Q}, \Sigma, \Gamma, \delta, q_0, \mathcal{F})\]
+    mit
+    \[\begin{array}{l l}
+        \mathcal{Q} & \text{endliche, nichtleere Menge von Zuständen} \\
+        \Sigma      & \text{endliche, nichtleere Menge, das Eingabealphabet mit} \\
+                    & \Sigma \cap \mathcal{Q} = \emptyset \text{ und } \Sigma_\epsilon = \Sigma \cup \{\epsilon\} \\
+        \Gamma      & \text{endliche, nichtleere Menge, das Kelleralphabet mit} \\
+                    & \perp \in \Gamma \text{ und } \Gamma_\epsilon = \Gamma \cup \{\epsilon\} \\
+        \delta      & \text{Überführungsrelation mit } \\
+                    & \delta \subseteq \mathcal{Q} \times \Sigma_\epsilon \times \Gamma_\epsilon \times \mathcal{Q} \times \Gamma_\epsilon^*\\
+        q_0         & \text{Startzustand} \\
+        \mathcal{F} & \text{Menge von Endzuständen mit } \mathcal{F} \subseteq \mathcal{Q} \\
+      \end{array}\]
+  \end{definition}
+\end{frame}
+
+\subsection{Typ-2-Grammatik}
+\begin{frame}[squeeze]{}
+  \begin{block}{Typ-2 Grammatik}
+    Sei 
+    \[\mathcal{G = (N, T, R, S)}.\] \\
+    $\mathcal{G}$ ist vom Typ-2, wenn die Produktionen folgende Form haben:
+    \[\begin{array}{l c l}
+        A & \rightarrow & w \\
+      \end{array}\]
+    mit
+    \begin{itemize}
+      \item $A \in \mathcal{N}$
+      \item $w \in (\mathcal{N} \cup \mathcal{T})^*$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{alertblock}{Frage}
+    Wie lässt sich feststellen, ob
+      \[\mathcal{L} \notin \mathcal{L}_2 \text{?}\]
+  \end{alertblock}
+  
+  \begin{exampleblock}{Antwort}
+    Mit Hilfe des Pumping-Lemmas für kontext-freie Sprachen. \\
+    \vspace*{0.5em}
+    Wenn die Bedingungen des Pumping-Lemmas nicht erfüllt sind, so kann die betroffene Sprache nicht kontext-frei sein.
+      \[\overline{\mathrm{PL_{kfS}}(\mathcal{L})} \rightarrow \mathcal{L} \notin \mathcal{L}_2.\]
+  \end{exampleblock}
+\end{frame}
+
+\subsection{Das Pumping-Lemma für kontext-freie Sprachen}
+\begin{frame}[squeeze]{}
+  \begin{block}{Das Pumping-Lemma für kontext-freie Sprachen}
+    Sei $\mathcal{L} \subseteq \Sigma^*$ eine kontext-freie Sprache.
+    Dann gibt es eine natürliche Zahl $p \in \mathbb{N}$ derart, dass sich jedes Wort $w \in \mathcal{L}$ mit $|w| \geq p$ zerlegen lässt in fünf Teilworte
+      \[w = uvxyz\]
+    mit
+    \begin{enumerate}
+      \item $|vy| > 0$
+      \item $|vxy| \leq p$
+      \item $\underset{i \in \mathbb{N}}{\bigwedge} uv^ixy^iz \in \mathcal{L}$
+    \end{enumerate}
+  \end{block}
+  
+  \pause
+  
+  \begin{alertblock}{Vorsicht!}
+    Es gilt
+    \vspace*{-0.5em}
+    \[\mathcal{L} \in \mathcal{L}_2 \rightarrow \mathrm{PL_{kfS}} \left( \mathcal{L} \right).\]\\
+    \vspace*{0.5em}
+    Die Umkehrung gilt jedoch \textbf{nicht}! Die folgende Aussage ist also \textbf{falsch}:
+    \vspace*{-0.5em}
+    \[\lightning ~ \mathrm{PL_{kfS}} \left( \mathcal{L} \right) \rightarrow \mathcal{L} \in \mathcal{L}_2. ~ \lightning\]
+  \end{alertblock}
+\end{frame}
+
+\section{Aufgaben}
+\begin{frame}[squeeze]{}
+  \begin{alertblock}{Aufgaben}
+    Prüfen Sie auf Kontext-freiheit:
+    \begin{enumerate}
+      \item $L_1 = \left\{ a^i b^j \;|\; i, j \in \mathbb{N} \wedge i \neq j \right\}$
+      \item $L_2 = \left\{ a^i b^j \;|\; i, j \in \mathbb{N} \wedge i = j^2 \right\}$
+    \end{enumerate}
+  \end{alertblock}
+  
+  \begin{block}{Herangehensweise}
+    \begin{itemize}
+      \item Angeben eines Kellerautomaten oder einer kontext-freien Grammatik für den Nachweis $L \in \mathcal{L}_2$
+      \item Benutzung des Pumping-Lemma für kontext-freie Sprachen für den Nachweis $L \notin \mathcal{L}_2$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\subsection{Lösungen}
+\begin{frame}[squeeze]{}
+  \begin{exampleblock}{$L_1 = \left\{ a^i b^j \;|\; i, j \in \mathbb{N} \wedge i \neq j \right\}$}
+  Wir müssen eine Grammatik finden, bei der stets entweder mehr a's ober mehr b's in den erzeugten Wörtern auftreten. Außerdem darf kein b vor einem a stehen. \\
+  \pause
+  \vspace*{1em}
+  Sei $\mathcal{G} = \left( \mathcal{N}, \mathcal{T}, \mathcal{R}, \mathcal{S} \right)$ mit
+  \[\begin{array}{l c l}
+      \mathcal{N} & = & \left\{ S, A, B, C \right\} \\
+      \mathcal{T} & = & \left\{ a, b \right\} \\
+      \mathcal{R} & : & S \rightarrow A \;|\; B \\
+                  &   & A \rightarrow aA \;|\; aC \\
+                  &   & B \rightarrow Bb \;|\; Cb \\
+                  &   & C \rightarrow aCb \;|\; \epsilon \\
+    \end{array}\]
+  $\mathcal{G}$ erzeugt $L_1 \to L_1 \in \mathcal{L}_2 \hfill \square$
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{Transformation $\mathcal{G}_{kfS} \rightarrow \textbf{NKA}$}
+    Sei $\mathcal{G} = \left( \mathcal{N}, \mathcal{T}, \mathcal{R}, \mathcal{S} \right)$. \\
+    Dann lässt sich daraus ein \textbf{NKA} $\mathcal{A}$ mit $\mathcal{L_A} = \mathcal{L_G}$ bestimmen mit
+    \[\mathcal{A} = \left( \mathcal{Q}, \Sigma, \Gamma, \delta, q_0, \mathcal{F} \right)\]
+    wobei
+    \[\begin{array}{l c l}
+        \mathcal{Q} & \leftarrow & \left\{ q_0, q_1, q_2 \right\} \\
+        \Sigma      & \leftarrow & \mathcal{T} \\
+        \Gamma      & \leftarrow & \mathcal{T} \cup \mathcal{N} \cup \left\{ \perp \right\} \\
+        \delta      & \leftarrow & \left\{ \left( q_0, \epsilon, \epsilon, q_1, S\perp \right), \left( q_1, \epsilon, \perp, q_2, \epsilon \right) \right\} \\
+                    & \cup       & \left\{ \left( q_1, \epsilon, A, q_1, w \right) \ | \ A \rightarrow w \in \mathcal{R} \right\} \\
+                    & \cup       & \left\{ \left( q_1, a, a, q_1, \epsilon \right) \ | \ a \in \mathcal{T} \right\} \\
+        \mathcal{F} & \leftarrow & \{q_2\} \\
+      \end{array}\]
+  \end{block}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  Alternativer, \textbf{fehlerhafter!} Beweis:
+  \begin{exampleblock}{$L_1 = \left\{ a^i b^j \;|\; i, j \in \mathbb{N} \wedge i \neq j \right\}$}
+  Da die Menge der kontext-freien Sprachen abgeschlossen ist bezüglich Komplementbildung, kann $L_1 \in \mathcal{L}_2$ gezeigt werden, wenn bewiesen werden kann, dass $\overline{L_1} \in \mathcal{L}_2$.
+  \pause
+  \[\overline{L_1} = \left\{ a^i b^j \;|\; i, j \in \mathbb{N} \wedge i = j \right\} = \left\{ a^n b^n \;|\; n \in \mathbb{N} \right\}\]
+  \pause
+  Sei $\mathcal{G} = (\mathcal{N}, \mathcal{T}, \mathcal{R}, \mathcal{S})$ mit
+  \[\begin{array}{l c l}
+      \mathcal{N} & = & \{S\} \\
+      \mathcal{T} & = & \{a, b\} \\
+      \mathcal{R} & : & S \rightarrow aSb \;|\; \epsilon \\
+    \end{array}\]
+  \pause
+  $\mathcal{G}$ erzeugt $\overline{L_1} \rightarrow \overline{L_1} \in \mathcal{L}_2 \rightarrow L_1 \in \mathcal{L}_2 \hfill \square$
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  Fehleraufdeckung:
+  \begin{exampleblock}{$L_1 = \left\{ a^i b^j \;|\; i, j \in \mathbb{N} \wedge i \neq j \right\}$}
+    \begin{itemize}
+      \item[$\surd$] Die Menge der kontext-freien Sprachen ist abgeschlossen bezüglich Komplementbildung
+      \pause
+      \item[$\surd$] $L_1 \in \mathcal{L}_2 \Leftrightarrow \overline{L_1} \in \mathcal{L}_2$
+      \pause
+      \item[$\lightning$] $\overline{L_1} = \left\{ a^i b^j \;|\; i, j \in \mathbb{N} \wedge i = j \right\} = \left\{ a^n b^n \;|\; n \in \mathbb{N} \right\}$
+    \end{itemize}
+  \end{exampleblock}
+
+  \pause
+  
+  \begin{block}{Komplementärsprache}
+    Das Komplement einer Sprache, $\overline{L}$ besteht aus den Wörtern, die \textbf{nicht} in $L$ sind.
+    \[\overline{L} = \left\{ w \in \Sigma^* \;|\; w \notin L \right\} = \Sigma^* \setminus L.\]
+    \[\Rightarrow L' = \left\{ a^i b^i \;|\; i \in \mathbb{N} \right\} \text{ ist nur eine Teilmenge von } \overline{L_1}.\]
+    \[\overline{L_1} = \left\{ w \in \{a, b\}^* \;|\; w \text{ hat nicht die Form } a^ib^j \text{ mit } i \neq j \right\}\]
+  \end{block}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{exampleblock}{$L_2 = \left\{ a^i b^j \;|\; i, j \in \mathbb{N} \wedge i = j^2 \right\}$}
+  Die Wörter von $L_2$ haben die Form $w = a^{j^2}b^j$. \\
+  \pause
+  \vspace*{0.5em}
+  Wenn $L_2 \in \mathcal{L}_2$, dann muss das $\mathrm{PL_{kfS}}$ gelten. \\
+  \pause
+  \vspace*{0.5em}
+  \[\text{Sei } w = a^{p^2}b^p.\] \\
+  \pause
+  \vspace*{0.5em}
+  Wir müssen nun das Wort zerteilen in $w = uvxyz$, wobei beachtet werden muss, dass nur Wörter zu $L$ gehören, bei denen kein a vor einem b steht. Außerdem muss bei zunehmender Anzahl von a's auch die Anzahl der b's zunehmen und umgekehrt. \\
+  \pause
+  \vspace*{0.5em}
+  Folglich kann v nur aus a's und y nur aus b's bestehen. \\
+  \pause
+  \vspace*{-0.5em}
+  \[\text{Sei die Zerteilung } w = a^{p^2}b^p = \underbrace{a^{p^2-m-n}}_u \cdot \underbrace{a^m}_v \cdot \underbrace{a^nb^r}_x \cdot \underbrace{b^s}_y \cdot \underbrace{b^{p-r-s}}_z.\]
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \vspace*{-0.25em}
+  \begin{exampleblock}{$L_2 = \left\{ a^i b^j \;|\; i, j \in \mathbb{N} \wedge i = j^2 \right\}$}
+  Beim Pumpem erhalten wir die Wörter
+  \[w_i = a^{p^2-m-n} \cdot a^{i \cdot m} \cdot a^nb^r \cdot b^{i \cdot s} \cdot b^{p-r-s}.\]
+  \pause
+  Damit $w_i \in L_2$, muss gelten
+  \vspace*{-0.25em}
+  \begin{eqnarray*}
+    p^2-m-n + i \cdot m + n    & = & \left( p-r-s + i \cdot s + r \right)^2 \\
+%    \pause
+    p^2-m + i \cdot m          & = & \left( p-s + i \cdot s \right)^2 \\
+%    \pause
+    p^2 + m \left( i-1 \right) & = & \left( p + s \left( i-1 \right) \right)^2 \\
+%    \pause
+    p^2 + \left( i-1 \right) m & = & p^2 + 2ps \left( i-1 \right) + s^2 \left( i-1 \right)^2 \\
+%    \pause
+    \left( i-1 \right) m       & = & 2ps \left( i-1 \right) + s^2 \left( i-1 \right)^2 \\
+%    \pause
+    m                          & = & 2ps + s^2 \left( i-1 \right) \\
+%    \pause
+    i                          & = & \frac{m - 2ps}{s^2} + 1
+  \end{eqnarray*} \\
+  \vspace*{-0.25em}
+  Damit $w_i \in L_2$, muss $i$ also konstant sein. \\
+  $\Rightarrow w$ lässt sich nicht für jedes $i$ pumpen $\to L_2 \notin \mathcal{L}_2 \hfill \square$
+  \end{exampleblock}
+\end{frame}
+
+\end{document}

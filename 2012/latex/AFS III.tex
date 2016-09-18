@@ -1,0 +1,243 @@
+\documentclass[]{beamer}
+\usepackage[utf8x]{inputenc}
+\usepackage{beamerthemeshadow}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{graphicx}
+\usepackage{textpos}
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{color}
+\usepackage{stmaryrd}
+
+\usetheme[compress]{Berlin}
+\usefonttheme{default}
+\useoutertheme{infolines}
+
+\setbeamertemplate{footline}%{infolines theme}
+{
+\leavevmode%
+\hbox{%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+\usebeamerfont{author in head/foot}\insertshortauthor%~~(\insertshortinstitute)
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+\usebeamerfont{title in head/foot}\insertshorttitle
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{date in head/foot}%
+\usebeamerfont{date in head/foot}\insertshortdate{}
+%\insertframenumber{} / \inserttotalframenumber\hspace*{2ex} % ohne Seitenzahlen
+\end{beamercolorbox}}%
+\vskip0pt%
+}
+
+\setbeamertemplate{frametitle}
+{%
+\vbox{}\vskip-3.9ex
+\begin{beamercolorbox}[wd=\paperwidth,ht=2.0ex,leftskip=0.4cm,dp=0.6ex,]{frametitle}
+\usebeamerfont{header_font_title}{\insertframetitle}
+\end{beamercolorbox}%
+}
+
+% Schusterjunge & Hurenkind
+\clubpenalty = 10000
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
+\hbadness = 10000
+
+\author[Christopher Blöcker, B. Sc.]{Christopher Blöcker, B. Sc.\\ inf9900@fh-wedel.de}
+\title[AFS Tutorium]{Tutorium\\Automaten und Formale Sprachen}
+\date{SS 2012}
+\subtitle{Teil III.}
+\subject{Automaten und Formale Sprachen}
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Abschlusseigenschaften formaler Sprachen}
+\subsection{Reguläre Sprachen}
+\begin{frame}[squeeze]{}
+  \vspace*{-0.35em}
+  \begin{block}{Reguläre Sprachen}
+    Die Menge der regulären Sprachen ist abgeschlossen bezüglich
+    \begin{itemize}
+      \item Komplementbildung
+            \vspace*{-0.75em}
+            \[\bigwedge_{L \in \mathcal{L}_3} \overline{L} \in \mathcal{L}_3 \hspace*{2.3em}\]
+      \item Konkatenation
+            \vspace*{-0.75em}
+            \[\bigwedge_{L_1, L_2 \in \mathcal{L}_3} L_1 \circ L_2 \in \mathcal{L}_3\]
+      \item Vereinigung
+            \vspace*{-0.75em}
+            \[\bigwedge_{L_1, L_2 \in \mathcal{L}_3} L_1 \cup L_2 \in \mathcal{L}_3\]
+      \item Durchschnitt
+            \vspace*{-0.75em}
+            \[\bigwedge_{L_1, L_2 \in \mathcal{L}_3} L_1 \cap L_2 \in \mathcal{L}_3\]
+      \item \textsc{Kleene}'scher Stern
+            \vspace*{-0.75em}
+            \[\bigwedge_{L \in \mathcal{L}_3} L^* \in \mathcal{L}_3 \hspace*{2.2em}\]
+    \end{itemize}
+  \end{block}
+  
+  \pause
+  \vspace*{-0.5em}
+  
+  \begin{exampleblock}{Wie?}
+    \pause
+    Kombination von Endlichen Automaten, Regulären Ausdrücken, $\ldots$
+  \end{exampleblock}
+\end{frame}
+
+\subsection{Kontext-freie Sprachen}
+\begin{frame}[squeeze]{}
+  \begin{block}{Kontext-freie Sprachen}
+    Die Menge der kontext-freien Sprachen ist abgeschlossen bezüglich
+    \begin{itemize}
+      \item Konkatenation
+            \[\bigwedge_{L_1, L_2 \in \mathcal{L}_2} L_1 \circ L_2 \in \mathcal{L}_2\]
+      \item Vereinigung \\
+            \[\bigwedge_{L_1, L_2 \in \mathcal{L}_2} L_1 \cup L_2 \in \mathcal{L}_2\]
+      \item \textsc{Kleene}'scher Stern \\
+            \[\bigwedge_{L \in \mathcal{L}_2} L^* \in \mathcal{L}_2 \hspace*{2.2em}\]
+    \end{itemize}
+  \end{block}
+  
+  \pause
+  \vspace*{-0.5em}
+  
+  \begin{alertblock}{Vorsicht}
+    Abgeschlossenheit bezüglich Komplementbildung und Durchschnitt besteht \textbf{nicht}.
+  \end{alertblock}
+\end{frame}
+
+\subsection{Kontext-sensitive Sprachen}
+\begin{frame}[squeeze]{}
+  \begin{block}{Kontext-sensitive Sprachen}
+    Die Menge der kontext-sensitive Sprachen ist abgeschlossen bezüglich
+    \begin{itemize}
+      \item Komplementbildung
+            \vspace*{-0.25em}
+            \[\bigwedge_{L \in \mathcal{L}_1} \overline{L} \in \mathcal{L}_1 \hspace*{2.3em}\]
+      \item Konkatenation
+            \vspace*{-0.25em}
+            \[\bigwedge_{L_1, L_2 \in \mathcal{L}_1} L_1 \circ L_2 \in \mathcal{L}_1\]
+      \item Vereinigung
+            \vspace*{-0.25em}
+            \[\bigwedge_{L_1, L_2 \in \mathcal{L}_1} L_1 \cup L_2 \in \mathcal{L}_1\]
+      \item Durchschnitt
+            \vspace*{-0.25em}
+            \[\bigwedge_{L_1, L_2 \in \mathcal{L}_1} L_1 \cap L_2 \in \mathcal{L}_1\]
+      \item \textsc{Kleene}'scher Stern
+            \vspace*{-0.25em}
+            \[\bigwedge_{L \in \mathcal{L}_1} L^* \in \mathcal{L}_1 \hspace*{2.2em}\]
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\subsection{Rekursiv aufzählbare Sprachen}
+\begin{frame}[squeeze]{}
+  \begin{block}{Rekursiv aufzählbare Sprachen}
+    Die Menge der rekursiv aufzählbaren Sprachen ist abgeschlossen bezüglich
+    \begin{itemize}
+      \item Konkatenation
+            \[\bigwedge_{L_1, L_2 \in \mathcal{L}_0} L_1 \circ L_2 \in \mathcal{L}_0\]
+      \item Vereinigung
+            \[\bigwedge_{L_1, L_2 \in \mathcal{L}_0} L_1 \cup L_2 \in \mathcal{L}_0\]
+      \item Durchschnitt
+            \[\bigwedge_{L_1, L_2 \in \mathcal{L}_0} L_1 \cap L_2 \in \mathcal{L}_0\]
+      \item \textsc{Kleene}'scher Stern
+            \[\bigwedge_{L \in \mathcal{L}_0} L^* \in \mathcal{L}_0 \hspace*{2.2em}\]
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\section{Transformationen}
+\begin{frame}[squeeze]{}
+  \vspace*{-0.25em}
+  \begin{block}{Endlicher Automat $\to$ Typ-3-Grammatik}
+    Sei $\mathcal{A} = \left( \mathcal{Q}, \Sigma, \delta, q_0, \mathcal{F} \right)$ ein Endlicher Automat. \\
+    \vspace*{0.5em}
+    Dann kann eine zu $\mathcal{A}$ äquivalente rechtslineare Typ-3-Grammatik $\mathcal{G}_r = \left( \mathcal{N}_r, \mathcal{T}_r, \mathcal{R}_r, \mathcal{S}_r \right)$ erzeugt werden durch
+    \pause
+    \vspace*{-0.5em}
+    \begin{eqnarray*}
+      \mathcal{N}_r & \leftarrow & \left\{ Q_i \ | \ q_i \in \mathcal{Q} \right\} \\
+      \pause
+      \mathcal{T}_r & \leftarrow & \Sigma \\
+      \pause
+      \mathcal{R}_r & \leftarrow & \left\{ \left( Q_i, aQ_j \right) \ | \ \left( q_i, a, q_j \right) \in \delta \right\} \cup \left\{ \left( Q_i, \epsilon \right) \ | \ q_i \in \mathcal{F} \right\} \hspace*{7.5em} \\
+      \pause
+      \mathcal{S}_r & \leftarrow & Q_0 \\
+    \end{eqnarray*}
+      
+    \pause
+    \vspace*{-1em}
+      
+    und die äquivalente linkslineare Grammatik $\mathcal{G}_l = \left( \mathcal{N}_l, \mathcal{T}_l, \mathcal{R}_l, \mathcal{S}_l \right)$ durch
+    \pause
+    \vspace*{-0.5em}
+    \begin{eqnarray*}
+      \mathcal{N}_l & \leftarrow & \left\{ Q_i \ | \ q_i \in \mathcal{Q} \right\} \cup \left\{ Q_{start} \right\} \\
+      \pause
+      \mathcal{T}_l & \leftarrow & \Sigma \\
+      \pause
+      \mathcal{R}_l & \leftarrow & \left\{ \left( Q_j, Q_ia \right) \ | \ ( q_i, a, q_j ) \in \delta \right\} \cup \left\{ \left( Q_{start}, Q_i \right) \ | \ q_i \in \mathcal{F} \right\} \cup \left\{ \left( Q_0, \epsilon \right) \right\} \\
+      \pause
+      \mathcal{S}_l & \leftarrow & Q_{start} \\
+    \end{eqnarray*}
+    \vspace*{-3.5em}
+  \end{block}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{Rechtslineare Typ-3-Grammatik $\to$ Endlicher Automat}
+    Sei $\mathcal{G} = \left( \mathcal{N}, \mathcal{T}, \mathcal{R}, \mathcal{S} \right)$ eine rechtslineare Typ-3-Grammatik. \\
+    \vspace*{0.5em}
+    Dann kann daraus ein äquivalenter NEA $\mathcal{A} = \left( \mathcal{Q}, \Sigma, \delta, q_0, \mathcal{F} \right)$ erzeugt werden durch
+    \pause
+    \begin{eqnarray*}
+      \mathcal{Q} & \leftarrow & \left\{ q_A \ | \ A \in \mathcal{N} \right\} \cup \left\{ q_{end} \right\} \\
+      \pause
+      \Sigma & \leftarrow & \mathcal{T} \\
+      \pause
+      \delta & \leftarrow & \left\{\left( q_A, a, q_B \right) \ | \ \left( A, aB \right) \in \mathcal{R} \right\} \cup \left\{ \left(q_A, a, q_{end} \right) \ | \ \left(A, a \right) \in \mathcal{R} \right\} \\
+      \pause
+      q_0 & \leftarrow & q_\mathcal{S} \\
+      \pause
+      \mathcal{F} & \leftarrow & \left\{ q_A \ | \ \left( A, \epsilon \right) \in \mathcal{R} \right\} \cup \left\{ q_{end} \right\} \\
+    \end{eqnarray*}
+    \\
+    \vspace*{-1em}
+    Der entstehende Automat ist nicht notwendigerweise minimal und kann unnütze Zustände enthalten.
+  \end{block}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{Linkslineare Typ-3-Grammatik $\to$ Endlicher Automat}
+    Sei $\mathcal{G} = \left( \mathcal{N}, \mathcal{T}, \mathcal{R}, \mathcal{S} \right)$ eine rechtslineare Typ-3-Grammatik. \\
+    \vspace*{0.5em}
+    Dann kann daraus ein äquivalenter NEA $\mathcal{A} = \left( \mathcal{Q}, \Sigma, \delta, q_0, \mathcal{F} \right)$ erzeugt werden durch
+    \pause
+    \begin{eqnarray*}
+      \mathcal{Q} & \leftarrow & \left\{ q_A \ | \ A \in \mathcal{N} \right\} \cup \left\{ q_{start} \right\} \\
+      \pause
+      \Sigma & \leftarrow & \mathcal{T} \\
+      \pause
+      \delta & \leftarrow & \left\{\left( q_B, a, q_A \right) \ | \ ( A, Ba ) \in \mathcal{R} \right\} \cup \left\{ \left(q_{start}, a, q_A \right) \ | \ \left(A, a \right) \in \mathcal{R} \right\} \\
+      \pause
+      q_0 & \leftarrow & q_{start} \\
+      \pause
+      \mathcal{F} & \leftarrow & \left\{ q_\mathcal{S} \right\} \\
+    \end{eqnarray*}
+    \\
+    \vspace*{-1em}
+    Der entstehende Automat ist nicht notwendigerweise minimal und kann unnütze Zustände enthalten.
+  \end{block}
+\end{frame}
+
+\end{document}

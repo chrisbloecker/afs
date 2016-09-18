@@ -1,0 +1,457 @@
+\documentclass[]{beamer}
+\usepackage[utf8x]{inputenc}
+\usepackage{beamerthemeshadow}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{graphicx}
+\usepackage{textpos}
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{color}
+
+\usetheme[compress]{Berlin}
+\usefonttheme{default}
+\useoutertheme{infolines}
+
+\setbeamertemplate{footline}%{infolines theme}
+{
+\leavevmode%
+\hbox{%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+\usebeamerfont{author in head/foot}\insertshortauthor%~~(\insertshortinstitute)
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+\usebeamerfont{title in head/foot}\insertshorttitle
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{date in head/foot}%
+\usebeamerfont{date in head/foot}\insertshortdate{}
+%\insertframenumber{} / \inserttotalframenumber\hspace*{2ex} % ohne Seitenzahlen
+\end{beamercolorbox}}%
+\vskip0pt%
+}
+
+\setbeamertemplate{frametitle}
+{%
+\vbox{}\vskip-3.9ex
+\begin{beamercolorbox}[wd=\paperwidth,ht=2.0ex,leftskip=0.4cm,dp=0.6ex,]{frametitle}
+\usebeamerfont{header_font_title}{\insertframetitle}
+\end{beamercolorbox}%
+}
+
+% Schusterjunge & Hurenkind
+\clubpenalty = 10000
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
+\hbadness = 10000
+
+\author[Christopher Blöcker, B. Sc.]{Christopher Blöcker, B. Sc.\\ inf9900@fh-wedel.de}
+\title[AFS Tutorium]{Tutorium\\Automaten und Formale Sprachen}
+\date{SS 2012}
+\subtitle{Teil I.}
+\subject{Automaten und Formale Sprachen}
+\begin{document}
+
+\begin{frame}{}
+  \titlepage
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{JFLAP}
+    Programm zur Simulation von Automaten etc., u.a.
+    \begin{itemize}
+      \item Endliche Automaten (+ Reguläre Ausdrücke)
+      \item Kellerautomaten
+      \item Turingmaschinen
+      \item Grammatiken
+      \item $\ldots$
+    \end{itemize}
+  \end{block}
+  
+  \begin{exampleblock}{Download}
+    Google $\rightarrow$ "JFLAP download".
+  \end{exampleblock}
+  
+  \begin{exampleblock}{Start}
+    \begin{itemize}
+      \item Linux : java -jar /pfad/JFLAP.jar $\&$
+      \item Windows : durch Anklicken
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\section{Sprachen}
+\begin{frame}[<+->][squeeze]{}
+  \begin{alertblock}{Frage}
+    Warum interessieren wir uns für Formale Sprachen?
+  \end{alertblock}
+  
+  \begin{exampleblock}{Antwort}
+    Die Theorie der Formalen Sprachen bildet die Grundlage für Programmiersprachen. \\
+    \vspace*{0.5em}
+    Wenn die syntaktische Beschreibung einer Programmiersprache gegeben ist, so können wir anhand dieser Information entscheiden, ob ein gegebenes Programm gültig ist und zu dieser Sprache \enquote{gehört}. \\
+    \vspace*{0.5em}
+    Automaten können für ebendieses Problem verwendet werden. Sie entscheiden, ob eine gegebene Eingabe zu einer bestimmten Sprache gehört. \\
+    \vspace*{0.5em}
+    Außerdem bietet die Sprachentheorie die Möglichkeit, bestimmte Eigenschaften von Sprachen zu beweisen oder zu widerlegen.
+  \end{exampleblock}
+\end{frame}
+
+\subsection{Definitionen}
+\begin{frame}[squeeze]{}{}
+  \begin{alertblock}{Frage}
+    Was ist eine Formale Sprache?
+  \end{alertblock}
+  
+  \pause
+  
+  \begin{block}{Definition: Formale Sprache}
+    Eine Formale Sprache ist eine Menge von Wörtern über einem Alphabet $\Sigma$. \\
+  \end{block}
+  
+  \pause
+  
+  \begin{block}{Anmerkung}
+    Wir werden Sprachen allgemein mit $L$ bezeichnen. \\
+    Für jede Sprache gilt
+    \[L \subseteq \Sigma^*,\]
+    wobei $\Sigma^*$ die Menge aller Wörter bezeichnet, die aus den gegebenen Buchstaben gebildet werden können. \\
+  \end{block}
+\end{frame}
+
+\begin{frame}[squeeze]{}{}
+  \begin{block}{Definition: Alphabet}
+    Ein Alphabet $\Sigma$ ist eine Menge von Zeichen. \\
+    Die Zeichen des Alphabets werden auch als Buchstaben bezeichnet.
+  \end{block}
+  
+  \pause
+  
+  \begin{block}{Definition: Wort}
+    Ein Wort über einem Alphabet $\Sigma$ ist eine endliche Folge von Zeichen aus $\Sigma$.
+  \end{block}
+  
+  \pause
+  
+  \begin{block}{Anmerkung}
+    Das Wort, das aus $0$ Zeichen besteht, wird als \enquote{Leeres Wort} $\epsilon$ bezeichnet.
+  \end{block}
+  
+  \pause
+  
+  \begin{alertblock}{Fragen}
+    \textcolor{red}{Mächtigkeit von $\Sigma^*$?} \\
+    \pause
+    \textcolor{red}{Beweis?}
+  \end{alertblock}
+\end{frame}
+
+\subsection{Beispiele}
+\begin{frame}[squeeze]{}{}
+  \begin{block}{Beispiele}
+    Sei $\Sigma = \{a, b, c\}$.
+    \begin{itemize}
+      \item<2-> $\Sigma^1$ bezeichnet die Menge aller Wörter der Länge 1 \\
+                $\Sigma^1 = \{a, b, c\}$ \\
+      \item<3-> $\Sigma^2$ bezeichnet die Menge aller Wörter der Länge 2 \\
+                $\Sigma^2 = \{aa, ab, ac, ba, bb, bc, ca, cb, cc\}$ \\
+      \item<4-> $\Sigma^k$ bezeichnet die Menge aller Wörter der Länge $k, k \in \mathbb{N}$ \\
+      \item<5-> $\Sigma^0$ bezeichnet die Menge aller Wörter der Länge $0$ \\
+                $\Sigma^0 = \{\epsilon\}$
+      \item<6-> $\Sigma^+$ bezeichnet die Menge aller nicht-leeren Wörter mit
+                \[\Sigma^+ = \underset{k \in \mathbb{N}^+}{\bigcup} \Sigma^k\]
+      \item<7-> $\Sigma^*$ bezeichnet die Menge aller Wörter mit \\ 
+                \[\Sigma^* = \Sigma^0 \cup \Sigma^+\]
+    \end{itemize}
+    \vspace*{-1em}
+  \end{block}
+\end{frame}
+
+\subsection{Konkatenation}
+\begin{frame}[<+->][squeeze]{}{}
+  \begin{block}{Konkatenation}
+    Zweistellige Operation in $\Sigma^*$.
+      \[\circ : \Sigma^* \times \Sigma^* \rightarrow \Sigma^*\]
+      $(\Sigma^*, \circ, \epsilon)$ ist ein Monoid.
+  \end{block}
+  
+  \begin{block}{Beispiel}
+    Sei 
+      \[x = \text{abc}, y = \text{def}.\]
+    Dann gilt:
+      \[x \circ y = \text{abcdef},\]
+      \[y \circ x = \text{defabc}.\]
+  \end{block}
+\end{frame}
+
+\section{Wiederholung}
+\subsection{Kategorientheorie}
+\begin{frame}[squeeze]{}{}
+  \begin{definition}
+    Ein Monoid ist ein Tripel $(\mathcal{M}, *, e)$ mit
+    \begin{enumerate}
+      \item Die Verknüpfung $*$ ist assoziativ
+        \[a * (b * c) = (a * b) * c = a * b * c\]
+        mit $a, b, c \in \mathcal{M}$
+      \item $e$ ist neutrales Element bezüglich $*$
+        \[e * a = a = a * e\]
+        mit $a \in \mathcal{M}$
+    \end{enumerate}
+    Ein Monoid ist eine Halbgruppe mit ausgezeichnetem neutralen Element.
+  \end{definition}
+\end{frame}
+
+\section{Sprachen}
+\subsection{Beschreibungsmöglichkeiten}
+\begin{frame}[<+->][squeeze]{}
+  \begin{alertblock}{Frage}
+    Wie lassen sich Sprachen beschreiben?
+  \end{alertblock}
+  
+  \begin{exampleblock}{Antwort}
+    \begin{itemize}
+      \item<2-> Explizite Aufzählung
+        \[\mathcal{L} = \{a, ab, abc\}\]
+      \item<3-> Mengendefinition
+        \[\mathcal{L} = \{w \in \Sigma^* \;|\; w \text{ endet mit a}\}\]
+      \item<4-> Angabe eines akzeptierenden Automaten
+      \item<5-> Angabe eines Regulären Ausdrucks
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\section{Deterministischer Endlicher Automat}
+\subsection{Definition}
+\begin{frame}[squeeze]{}
+  \begin{definition}
+    Ein deterministischer Endlicher Automat ist ein 5-Tupel.
+    \[\mathcal{A} = (\mathcal{Q}, \Sigma, \delta, q_0, \mathcal{F})\]
+    mit
+    \[\begin{array}{l l}
+        \mathcal{Q} & \text{endliche, nichtleere Menge von Zust\"anden} \\
+        \Sigma      & \text{endliche, nichtleere Menge, das Eingabealphabet mit} \\
+                    & \Sigma \cap \mathcal{Q} = \emptyset \\
+        \delta & \text{überführungsfunktion mit } \delta : \mathcal{Q} \times \Sigma \rightarrow \mathcal{Q} \\
+        q_0         & \text{Startzustand} \\
+        \mathcal{F} & \text{Menge von Endzust\"anden mit } \mathcal{F} \subseteq \mathcal{Q} \\
+      \end{array}\]
+  \end{definition}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{Zustandsmenge $\mathcal{Q}$}
+    \begin{itemize}
+      \item endlich \\
+        Ein Endlicher Automat darf nur aus endlich vielen Zust\"anden bestehen. Er hat keinen Speicher, lediglich über den aktuellen Zustand kann er sich merken, was zuletzt (bzw. bisher) geschehen ist. \\
+        W\"are die Menge der Zust\"ande nicht endlich, so k\"onnte kein Computer den Automaten simulieren.
+      \item nicht leer \\
+        Sonst kann er nichts machen.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[squeeze]{}
+  \begin{block}{Eingabealphabet $\Sigma$}
+    \begin{itemize}
+      \item endlich \\
+        W\"are das Eingabealphabet nicht endlich, so w\"are auch die überführungsrelation (bezogen auf den zu ihrer Darstellung ben\"otigten Speicherplatz) unendlich groß und kein Computer k\"onnte den Automaten simulieren.
+      \item nicht leer \\
+        Sonst k\"onnte die Sprache nur $\epsilon$ enthalten und w\"are uninteressant.
+      \item $\Sigma \cap \mathcal{Q} = \emptyset$ \\
+        Ein Zustand kann nicht gleichzeitig Eingabezeichen sein.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{block}{Überführungsfunktion $\delta$}
+    \[\delta : \mathcal{Q} \times \Sigma \rightarrow \mathcal{Q}\]
+    \begin{enumerate}
+      \item<1-> Der Automat befindet sich stets in einem Zustand
+      \item<1-> Er liest ein Zeichen der Eingabe
+      \item<1-> Die überführungsfunktion $\delta$ berechnet den daraus resultierenden Nachfolgezustand
+    \end{enumerate}
+  \end{block}
+  
+  \begin{block}{Startzustand $q_o$}
+    Der Startzustand des Automaten wird mit $q_0$ bezeichnet. \\
+    Er kann auch einen beliebigen anderen Namen erhalten und muss gekennzeichnet werden.
+  \end{block}
+\end{frame}
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{block}{Endzustandsmenge $\mathcal{F}$}
+    \[\mathcal{F} \subseteq \mathcal{Q}\]
+    Die Endzust\"ande haben folgende Bedeutung: \\
+    Wenn sich der Automat nach Verarbeiten der gesamten Eingabe (also des gesamten Eingabewortes $w$) in einem Zustand aus $\mathcal{F}$ befindet, dann geh\"ort $w$ zu der vom Automaten akzeptierten Sprache.
+  \end{block}
+  
+  \begin{block}{Akzeptierte Sprache}
+    Die von $\mathcal{A}$ akzeptierte Sprache $\mathcal{L}_\mathcal{A}$ ist
+    \[\mathcal{L_A} = \{w \in \Sigma^* \;|\; \mathcal{A} \text{ befindet sich nach Berechnung in einem Endzustand.} \}\]
+  \end{block}
+\end{frame}
+
+\section{Exkurs}
+\subsection{Mengenlehre}
+\begin{frame}[<+->][squeeze]{}
+  \begin{alertblock}{Frage}
+    Wann ist eine Menge endlich?
+    \[|\mathcal{M}| \overset{?}{<} \infty\]
+  \end{alertblock}
+  
+  \begin{exampleblock}{Antwort}
+    Eine Menge ist genau dann endlich, wenn sie keine zu sich selbst gleichm\"achtige, echte Teilmenge enth\"alt.
+    \[|\mathcal{M}| < \infty \Leftrightarrow \bigwedge_{\mathcal{N} \subsetneq \mathcal{M}} |\mathcal{N}| < |\mathcal{M}|\]
+  \end{exampleblock}
+\end{frame}
+
+\section{Deterministischer Endlicher Automat}
+\subsection{Definition}
+\begin{frame}[<+->][squeeze]{}
+  \begin{block}{Erweiterte Überführungsfunktion}
+    \[\delta^* : \mathcal{Q} \times \Sigma^* \rightarrow \mathcal{Q}\]
+    mit
+    \[\delta^*(q_i, w) \leftarrow \left\{
+                                    \begin{array}{l l}
+                                      q_i & \text{für } w = \epsilon \\
+                                      \delta(\delta^*(q_i, u), a) & \text{für } w = u \cdot a
+                                    \end{array} \right.\]
+  \end{block}
+  
+  \vspace*{-0.5em}
+  
+  \begin{block}{Akzeptierte Sprache}
+    Sei $\mathcal{A} = (\mathcal{Q}, \Sigma, \delta, q_0, \mathcal{F})$ ein Endlicher Automat und $\delta^*$ die zu $\mathcal{A}$ gehörende erweiterte Überführungsfunktion. \\
+    Die von $\mathcal{A}$ akzeptierte Sprache $\mathcal{L}_\mathcal{A}$ ist
+    \[\mathcal{L_A} = \{w \in \Sigma^* \;|\; \delta^*(q_0, w) \in \mathcal{F}\}.\]
+  \end{block}
+  
+  \vspace*{-0.5em}
+  
+  \begin{exampleblock}{Anmerkung}
+    $\delta^*$ ist die rekursive Beschreibung der Arbeitsweise eines Endlichen Automaten. Die lässt sich durch Wiederholte Anwendung der Regel für $\delta^*$ verdeutlichen.
+  \end{exampleblock}
+\end{frame}
+
+\subsection{Die erweiterte Überführungsfunktion $\delta^*$}
+\begin{frame}[squeeze]{}
+  \vspace*{-0.25em}
+  \begin{block}{Arbeitsweise eines DEA - Pseudocode}
+    Sei $\mathcal{A} = \left( \mathcal{Q}, \Sigma, \delta, q_0, \mathcal{F} \right)$ ein DEA und $w \in \Sigma^*$ ein Eingabewort. Die Abarbeitung von $w$ durch $\mathcal{A}$ verläuft dann wie folgt: \\
+    \vspace*{0.5em}
+    \texttt{q = q$_0$} \\
+    \texttt{for (i = 0; i < |w|;  ++i)} \\
+    \texttt{\ \ q = $\delta$(q, w$_i$)} \\
+    \texttt{return q $\in \mathcal{F}$}
+  \end{block}
+  
+  \vspace*{-0.5em}
+  \pause
+  
+  \begin{block}{Äquivalente Beschreibung mit $\delta^*$}
+    $\delta^*$ ist die rekursive Beschreibung der Arbeitsweise eines Endlichen Automaten und führt zur selben Folge von Zustandsübergängen. \\
+    \vspace*{0.5em}
+    Sei wieder $\mathcal{A} = \left( \mathcal{Q}, \Sigma, \delta, q_0, \mathcal{F} \right)$ ein DEA und $w = abc$ eine Eingabe für $\mathcal{A}$:
+    \vspace*{-0.25em}
+    \begin{eqnarray*}
+      \delta^* \left( q_0, abc \right) & = & \delta \left( \delta^* \left( q_0, ab \right), c \right) \\
+                                       & = & \delta \left( \delta \left( \delta^* \left( q_0, a \right), b \right), c \right) \\
+                                       & = & \delta \left( \delta \left( \delta \left( \delta^* \left( q_0, \epsilon \right), a \right), b \right), c \right) \\
+                                       & = & \delta \left( \delta \left( \delta \left( q_0, a \right), b \right), c \right)
+    \end{eqnarray*}
+  \end{block}
+\end{frame}
+
+\section{Nichtdeterministischer Endlicher Automat}
+\subsection{Definition}
+\begin{frame}[squeeze]{}
+  \begin{definition}
+    Ein nichtdeterministischer Endlicher Automat ist ein 5-Tupel.
+    \[\mathcal{A} = (\mathcal{Q}, \Sigma_\epsilon, \delta, q_0, \mathcal{F})\]
+    mit
+    \[\begin{array}{l l}
+        \mathcal{Q}     & \text{endliche, nichtleere Menge von Zust\"anden} \\
+        \Sigma_\epsilon & \text{endliche, nichtleere Menge, das Eingabealphabet mit} \\
+                        & \Sigma_\epsilon \cap \mathcal{Q} = \emptyset \\
+        \delta          & \text{überführungsrelation mit } \delta \subseteq \mathcal{Q} \times \Sigma_\epsilon \times \mathcal{Q} \\
+        q_0             & \text{Startzustand} \\
+        \mathcal{F}     & \text{Menge von Endzust\"anden mit } \mathcal{F} \subseteq \mathcal{Q} \\
+      \end{array}\]
+  \end{definition}
+\end{frame}
+
+\begin{frame}[<+->][squeeze]{}
+  \begin{block}{$\Sigma_\epsilon$}
+    Das Eingabealphabet enth\"alt nun auch das leere Wort
+    \[\Sigma_\epsilon \leftarrow \Sigma \cup \{\epsilon\}.\]
+    Der Automat kann einen Zustandsübergang durchführen, ohne ein Eingabezeichen zu lesen (bzw. indem er $\epsilon$ liest).
+  \end{block}
+  
+  \begin{block}{$\delta$}
+    Ein Zustand kann nun mehrere Folgezustände haben
+    \[\delta \subseteq \mathcal{Q} \times \Sigma_\epsilon \times \mathcal{Q}\]
+    bzw.
+    \[\delta : \mathcal{Q} \times \Sigma_\epsilon \rightarrow \mathcal{P(Q)}.\]
+  \end{block}
+\end{frame}
+
+\section{Reguläre Ausdrücke}
+\begin{frame}[<+->][squeeze]{}
+  \begin{block}{Regulärer Ausdruck}
+    Ein Regulärer Ausdruck beschreibt eindeutig eine Reguläre Menge. Jede Reguläre Menge kann als Reguläre Sprache aufgefasst werden.
+  \end{block}
+  
+  \begin{block}{Reguläre Ausdrücke über einem Alphabet $\Sigma$ sind}
+    \begin{itemize}
+      \item $\epsilon$
+      \item $\emptyset$
+      \item $\textbf{a} \Leftrightarrow a \in \Sigma$
+      \item $\mathcal{R} \leftarrow \mathcal{R}_1 \circ \mathcal{R}_2$
+      \item $\mathcal{R} \leftarrow \mathcal{R}_1 + \mathcal{R}_2$
+      \item $\mathcal{R} \leftarrow \mathcal{R}^+$
+      \item $\mathcal{R} \leftarrow \mathcal{R}^* = \mathcal{R}^+ + \epsilon$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\subsection{Beispiele}
+\begin{frame}[<+->][squeeze]{}
+\begin{exampleblock}{Beipsiele für Reguläre Ausdrücke mit $\Sigma = \left\{ 0, 1 \right\}$}
+\begin{table}
+  \centering
+  \vspace*{0.5em}
+  \begin{tabular}{|l|l|}
+    \hline
+    Regulärer Ausdruck & Erzeugte Sprache \\
+    \hline
+    \hline
+    $\mathcal{R}_0 = \textbf{1}$ & $\mathcal{L} \left( \mathcal{R}_0 \right) = \left\{ 1 \right\}$ \\
+    \hline
+    $\mathcal{R}_1 = \textbf{0} + \textbf{1}$ & $\mathcal{L} \left( \mathcal{R}_1 \right) = \left\{ 0, 1 \right\}$ \\
+    \hline
+    $\mathcal{R}_2 = \textbf{0} \cdot \textbf{1} \left( = \textbf{01} \right)$ & $\mathcal{L} \left( \mathcal{R}_2 \right) = \left\{ 0, 1 \right\}$ \\
+    \hline
+    $\mathcal{R}_3 = \textbf{1} \cdot \left( \textbf{0} + \textbf{1} \right)$ & $\mathcal{L} \left( \mathcal{R}_3 \right) = \left\{ 10, 11 \right\}$ \\
+    \hline
+    $\mathcal{R}_4 = \textbf{0}^+ \cdot \textbf{1}$ & $\mathcal{L} \left( \mathcal{R}_4 \right) = \left\{ 01, 001, 0001, 00001, \ldots \right\}$ \\
+    \hline
+    $\mathcal{R}_5 = \textbf{1}^*$ & $\mathcal{L} \left( \mathcal{R}_5 \right) = \left\{ \epsilon, 1, 11, 111, 1111, \ldots \right\}$ \\
+    \hline
+    $\mathcal{R}_6 = \mathcal{R}_1 \cdot \mathcal{R}_3$ & $\mathcal{L} \left( \mathcal{R}_6 \right) = \left\{ 010, 011, 110, 111 \right\}$ \\
+    \hline
+    $\mathcal{R}_7 = \mathcal{R}_1 + \epsilon$ & $\mathcal{L} \left( \mathcal{R}_7 \right) = \left\{ \epsilon, 0, 1 \right\}$ \\
+    \hline
+    $\mathcal{R}_8 = \mathcal{R}_6 \cdot \emptyset$ & $\mathcal{L} \left( \mathcal{R}_8 \right) = \emptyset$ \\
+    \hline
+    $\mathcal{R}_9 = \mathcal{R}_1^+ + \mathcal{R}_7$ & $\mathcal{L} \left( \mathcal{R}_9 \right) = \left\{ \epsilon, 0, 1, 00, 01, 10, 11, \ldots \right\} = \Sigma^*$ \\
+    \hline    
+  \end{tabular}
+  \vspace*{-0.5em}
+\end{table}
+\end{exampleblock}
+\end{frame}
+
+\end{document}

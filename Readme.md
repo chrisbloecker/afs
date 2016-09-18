@@ -5,42 +5,69 @@ This repository contains my teaching materials for "Automaten & Formale Sprachen
 
 ## 2012
 The slides cover the following topics:
-1. [AFS 0.](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%200.pdf)
+
+1. [AFS 0](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%200.pdf)
   - Revision of discrete mathematics
-2. [AFS I.](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%20I.pdf)
+2. [AFS I](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%20I.pdf)
   - Languages
   - Definitions
   - Finite automata
   - Regular expressions
-3. [AFS II.](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%20II.pdf)
+3. [AFS II](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%20II.pdf)
   - Equivalence of automata
   - Powerset construction
+  - Chomsky hierarchy
   - Pumping lemma for regular languages
   - Minimisation of finite automata
-4. [AFS G.](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%20II%20Grammatiken.pdf)
+4. [AFS G](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%20II%20Grammatiken.pdf)
   - Grammars
   - Chomsky hierarchy
   - Chomsky normal form
-5. [AFS III.](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%20III.pdf)
+5. [AFS III](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%20III.pdf)
   - Closure properties
   - Pumping lemma examples
-6. [AFS IV.](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%20IV.pdf)
+6. [AFS IV](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%20IV.pdf)
   - Ambiguity of grammars
   - Pushdown automata
   - Pumping lemma for context-free languages
-7. [AFS PL.](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%20PL.pdf)
+7. [AFS PL](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%20PL.pdf)
   - Pumping lemma for regular and context-free languages
   - Examples of proofs using the pumping lemma
-8. [AFS V.](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%20V.pdf)
+8. [AFS V](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/AFS%20V.pdf)
   - Turing machines
   - Cardinality of classes of languages
-9. [KOMP.](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/KOMP.pdf)
+9. [KOMP](https://github.com/chrisbloecker/afs/blob/master/2012/pdf/KOMP.pdf)
   - Introduction to complexity theory
 
 ## 2010
 The slides cover the following topics:
-*
-*
-*
-*
-*
+
+1. [AFS 0](https://github.com/chrisbloecker/afs/blob/master/2010/pdf/AFS0.pdf)
+  - Revision of discrete mathematics
+2. [AFS 1](https://github.com/chrisbloecker/afs/blob/master/2010/pdf/AFS1.pdf)
+  - Languages
+  - Definitions
+  - Finite automata
+  - Regular expressions
+3. [AFS 2](https://github.com/chrisbloecker/afs/blob/master/2010/pdf/AFS2.pdf)
+  - Equivalence of automata
+  - Powerset construction
+  - Chomsky hierarchy
+  - Pumping lemma for regular languages
+  - Minimisation of finite automata
+4. [AFS G](https://github.com/chrisbloecker/afs/blob/master/2010/pdf/AFSGrammatiken.pdf)
+  - Grammars
+  - Chomsky hierarchy
+  - Chomsky normal form
+5. [AFS 3](https://github.com/chrisbloecker/afs/blob/master/2010/pdf/AFS3.pdf)
+  - Closure properties
+  - Pumping lemma examples
+6. [AFS 4](https://github.com/chrisbloecker/afs/blob/master/2010/pdf/AFS4.pdf)
+  - Ambiguity of grammars
+  - Pushdown automata
+  - Pumping lemma for context-free languages
+7. [AFS 5](https://github.com/chrisbloecker/afs/blob/master/2010/pdf/AFS5.pdf)
+  - Turing machines
+  - Cardinality of classes of languages
+8. [KOMP](https://github.com/chrisbloecker/afs/blob/master/2010/pdf/KOMP.pdf)
+  - Introduction to complexity theory
